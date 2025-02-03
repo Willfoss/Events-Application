@@ -1,0 +1,15 @@
+Post new user
+Patch user (isStaff)
+patch user (isAdmin)
+get users
+
+EVENTS
+GET events (only authorised if user)
+GET my events (get only event you have signed up for)
+PATCH event (sign up to event)
+POST new event (if staff)
+
+CALANDER
+POST - post event details to google calandar
+
+
