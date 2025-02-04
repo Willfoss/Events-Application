@@ -1,12 +1,12 @@
 .logo {
   color: var(--brand-colour);
-  width: 3em;
-  height: 3em;
+  width: 2.5em;
+  height: 2.5em;
 }
 
 .logo-heading {
   color: var(--brand-colour);
-  font-size: 3em;
+  font-size: 2.5em;
 }
 
 #header {
@@ -14,6 +14,5 @@
   align-items: center;
   height: 75px;
   width: 100%;
-  gap: 1em;
-  padding-left: 0.5em;
+  gap: 0.5em;
 }
