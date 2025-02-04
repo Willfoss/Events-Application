@@ -1,0 +1,146 @@
+#login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0em 1em;
+}
+
+.login-page-container {
+  height: calc(100dvh - var(--header-height));
+  display: flex;
+  width: 100%;
+  align-self: stretch;
+  background-color: transparent;
+}
+
+.login-container,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.login-container {
+  justify-content: flex-start;
+  margin-top: 2em;
+}
+
+.login-form {
+  justify-content: center;
+  max-width: 400px;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  width: 100%;
+}
+
+input,
+.login-button,
+.guest-button {
+  border: none;
+  border-radius: 0.3em;
+  height: 3em;
+  width: 100%;
+  font-size: 1em;
+  color: black;
+}
+
+.guest-button {
+  max-width: 400px;
+  margin-top: 1em;
+  background-color: red;
+  font-weight: bold;
+  color: #fff;
+}
+
+.login-button {
+  margin-top: 1em;
+  background-color: var(--brand-colour);
+  font-weight: bold;
+  color: white;
+  &:hover {
+    background-color: var(--brand-hover-colour);
+  }
+}
+
+.login-button-loading {
+  margin-top: 1em;
+  background-color: var(--brand-loading-colour);
+  display: flex;
+  justify-content: center;
+}
+
+.button-loading-animation {
+  height: 3em;
+  width: 3em;
+}
+
+.text-input {
+  background-color: var(--secondary-background-colour);
+  padding: 0em 1em;
+}
+
+.text-input:focus {
+  outline: solid 3px var(--brand-colour);
+}
+
+::placeholder {
+  color: black !important;
+}
+
+::placeholder:focus {
+  color: transparent;
+}
+
+.text-input:focus::placeholder {
+  opacity: 0;
+}
+
+.login-header {
+  color: var(--brand-colour);
+  margin-bottom: 1em;
+  font-size: 2em;
+}
+
+.to-signup {
+  font-weight: bold;
+  color: var(--brand-colour);
+  border-bottom: 2px solid white;
+  &:hover {
+    border-bottom: 2px solid var(--brand-colour);
+  }
+}
+
+.login-text {
+  color: var(--primary-text-colour);
+}
+
+.link {
+  text-decoration: none;
+}
+
+.to-signup:hover,
+.login-button {
+  cursor: pointer;
+}
+
+.login-error-text {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 0.2em;
+}
+
+@media screen and (min-width: 768px) {
+  .login-page-container {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container {
+    margin: 0;
+  }
+}
