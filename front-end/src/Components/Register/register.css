@@ -61,7 +61,7 @@ label {
 
 .register-button-loading {
   margin-top: 1em;
-  background-color: var(--brand-hover-loading);
+  background-color: var(--brand-loading-colour);
   display: flex;
   justify-content: center;
 }
