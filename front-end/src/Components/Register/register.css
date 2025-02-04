@@ -1,0 +1,155 @@
+#register-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0em 1em;
+}
+
+.register-page-container {
+  height: calc(100dvh - var(--header-height));
+  display: flex;
+  width: 100%;
+  align-self: stretch;
+  background-color: transparent;
+}
+
+.register-container,
+.register-form {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  width: 100%;
+}
+
+.register-container {
+  justify-content: flex-start;
+  margin-top: 2em;
+}
+
+.register-form {
+  max-width: 400px;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.text-input,
+.register-button,
+.register-button-loading {
+  border: none;
+  border-radius: 0.3em;
+  height: 3em;
+  width: 100%;
+  font-size: 1em;
+}
+
+.register-button {
+  margin-top: 1em;
+  background-color: var(--brand-colour);
+  font-weight: bold;
+  color: white;
+  &:hover {
+    background-color: var(--brand-hover-colour);
+  }
+}
+
+.register-button-loading {
+  margin-top: 1em;
+  background-color: var(--brand-hover-loading);
+  display: flex;
+  justify-content: center;
+}
+
+.button-loading-animation {
+  height: 3em;
+  width: 3em;
+}
+
+.text-input {
+  background-color: var(--secondary-background-colour);
+  padding: 0em 1em;
+  margin-top: 0.5em;
+}
+
+.text-input:focus {
+  outline: solid 3px var(--brand-colour);
+}
+
+::placeholder {
+  color: #fff;
+}
+
+::placeholder:focus {
+  color: transparent;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+}
+
+.register-header {
+  color: var(--brand-colour);
+  margin-bottom: 1em;
+  font-size: 2em;
+}
+
+.register-text {
+  color: var(--primary-text-colour);
+  text-decoration: none;
+}
+
+.to-login {
+  font-weight: bold;
+  color: var(--brand-colour);
+  border-bottom: 2px solid white;
+  margin-bottom: 2em;
+  &:hover {
+    border-bottom: 2px solid var(--brand-colour);
+  }
+}
+
+.to-login:hover,
+.register-button {
+  cursor: pointer;
+}
+
+input::file-selector-button {
+  background-color: var(--secondary-background-colour);
+  border: none;
+  border-radius: 0.3em;
+  height: 3em;
+  width: 120px;
+  font-size: 1em;
+  color: #fff;
+}
+
+input::file-selector-button:hover {
+  cursor: pointer;
+}
+
+.image-uploader {
+  margin-top: 0.5em;
+}
+
+.register-error-text {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 0.2em;
+}
+
+@media screen and (min-width: 768px) {
+  .register-page-container {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .register-container {
+    margin: 0;
+  }
+}
