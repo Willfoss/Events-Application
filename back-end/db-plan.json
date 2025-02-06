@@ -1,14 +1,11 @@
 {
   "users": {
-    "id": "Pkey",
     "name": "String",
-    "username": "string",
     "email": "string",
     "picture": "string - default it",
     "password": "string - hashed",
     "isStaff": "boolean",
-    "isAdmin": "boolean",
-    "events": "array of event objs"
+    "isAdmin": "boolean"
   },
   "events": {
     "id": "pkey",
@@ -21,7 +18,12 @@
     "endDate": "string",
     "startTime": "string",
     "endTime": "string",
-    "attendees": "array of objs",
     "link": "link to event website"
+  },
+  "attendees": {
+    "id": "pkey",
+    "eventId": "references events",
+    "name": "references users",
+    "email": "references users"
   }
 }
