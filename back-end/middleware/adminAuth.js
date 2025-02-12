@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 function authoriseAdmin(request, response, next) {
+  let token;
+
   if (request.headers.authorization && request.headers.authorization.startsWith("Bearer ")) {
     token = request.headers.authorization.split(" ")[1];
 

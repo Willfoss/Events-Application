@@ -131,8 +131,10 @@ describe("USERS testing", () => {
         });
     });
   });
-  describe.only("GET a list of all users (admin only)", () => {
+  describe("GET a list of all users (admin only)", () => {
     let adminUser;
+    let userUser;
+    let staffUser;
 
     beforeEach(() => {
       return request(app)
@@ -143,13 +145,31 @@ describe("USERS testing", () => {
         });
     });
 
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail1@email.com", password: "password1234" })
+        .then(({ body }) => {
+          userUser = body.user;
+        });
+    });
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail4@email.com", password: "password1234567" })
+        .then(({ body }) => {
+          staffUser = body.user;
+        });
+    });
+
     test("GET 200: returns a list of all users in the db", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
         .set({ authorization: `Bearer ${adminUser.token}` })
         .then(({ body }) => {
-          expect(body.users.length).toBe(7);
+          expect(body.users.length).toBe(6);
           body.users.forEach((user) => {
             expect(user).toMatchObject({
               user_id: expect.any(Number),
@@ -158,6 +178,33 @@ describe("USERS testing", () => {
               role: expect.any(String),
             });
           });
+        });
+    });
+
+    test("GET 401: returns a not authenticated message if somebody not listed on the db tries to access the data", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("GET 403: returns a not authorised message if a staff member tries to access the data ", () => {
+      return request(app)
+        .get("/api/users")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+    test("GET 403: returns a not authorised message if a user tries to access the data ", () => {
+      return request(app)
+        .get("/api/users")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
         });
     });
   });

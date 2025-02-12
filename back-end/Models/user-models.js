@@ -33,4 +33,11 @@ function signInUser(email, password) {
   });
 }
 
-module.exports = { postNewUser, signInUser };
+function fetchAllUsers() {
+  const queryString = `SELECT * FROM users;`;
+  return db.query(queryString).then(({ rows }) => {
+    return rows;
+  });
+}
+
+module.exports = { postNewUser, signInUser, fetchAllUsers };

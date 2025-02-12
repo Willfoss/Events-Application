@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { postNewUser, signInUser } = require("../Models/user-models");
+const { postNewUser, signInUser, fetchAllUsers } = require("../Models/user-models");
 
 function registerUser(request, response, next) {
   const { email, name, password } = request.body;
@@ -24,4 +24,14 @@ function loginUser(request, response, next) {
     });
 }
 
-module.exports = { registerUser, loginUser };
+function getAllUsers(request, response, next) {
+  fetchAllUsers()
+    .then((users) => {
+      response.send({ users });
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { registerUser, loginUser, getAllUsers };
