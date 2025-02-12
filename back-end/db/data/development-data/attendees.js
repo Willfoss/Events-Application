@@ -26,7 +26,6 @@ module.exports = [
   {
     event_id: 4,
     email: "usertestemail1@email.com",
-    name: "usertest1",
   },
   {
     event_id: 4,
