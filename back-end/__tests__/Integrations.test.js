@@ -163,7 +163,7 @@ describe("USERS testing", () => {
         });
     });
 
-    test("GET 200: returns a list of all users in the db", () => {
+    test("GET 200: returns a list of all users in the db if an admin tries to access to data", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
