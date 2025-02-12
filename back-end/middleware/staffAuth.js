@@ -18,4 +18,4 @@ function authoriseStaff(request, response, next) {
   }
 }
 
-module.exports = authoriseStaff;
+module.exports = { authoriseStaff };

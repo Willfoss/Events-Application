@@ -18,4 +18,4 @@ function authoriseAdmin(request, response, next) {
   }
 }
 
-module.exports = authoriseAdmin;
+module.exports = { authoriseAdmin };

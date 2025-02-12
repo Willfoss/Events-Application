@@ -18,4 +18,4 @@ function authoriseUser(request, response, next) {
   }
 }
 
-module.exports = authoriseUser;
+module.exports = { authoriseUser };
