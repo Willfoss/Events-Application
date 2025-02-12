@@ -15,8 +15,7 @@ const seed = ({ eventsData, usersData, attendeesData }) => {
         email VARCHAR PRIMARY KEY,
         name VARCHAR NOT NULL,
         password VARCHAR NOT NULL,
-        is_staff BOOLEAN NOT NULL,
-        is_admin BOOLEAN NOT NULL,
+        role VARCHAR DEFAULT 'user',
         created_at TIMESTAMP DEFAULT NOW()
         );`);
     })
@@ -44,9 +43,9 @@ const seed = ({ eventsData, usersData, attendeesData }) => {
       );`);
     })
     .then(() => {
-      const usersQueryString = "INSERT INTO users (email, name, password, is_staff, is_admin) VALUES %L RETURNING *;";
-      const usersFormattedQuery = usersData.map(({ email, name, password, is_staff, is_admin }) => {
-        return [email, name, password, is_staff, is_admin];
+      const usersQueryString = "INSERT INTO users (email, name, password, role) VALUES %L RETURNING *;";
+      const usersFormattedQuery = usersData.map(({ email, name, password, role }) => {
+        return [email, name, password, role];
       });
       return db.query(format(usersQueryString, usersFormattedQuery));
     })
