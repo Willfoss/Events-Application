@@ -12,7 +12,7 @@ const seed = ({ eventsData, usersData, attendeesData }) => {
     })
     .then(() => {
       return db.query(`CREATE TABLE users (
-        user_id SERIAL PRIMARY KEY
+        user_id SERIAL PRIMARY KEY,
         email VARCHAR UNIQUE,
         name VARCHAR NOT NULL,
         password VARCHAR NOT NULL,

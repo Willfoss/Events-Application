@@ -4,7 +4,7 @@ function authoriseAdmin(request, response, next) {
   if (request.headers.authorization && request.headers.authorization.startsWith("Bearer ")) {
     token = request.headers.authorization.split(" ")[1];
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (decoded.role === "admin") {
       next();
