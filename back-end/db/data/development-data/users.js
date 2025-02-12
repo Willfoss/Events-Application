@@ -1,38 +1,42 @@
-module.exports = [
+const bcrypt = require("bcrypt");
+
+const usersData = [
   {
     email: "willfossard@outlook.com",
     name: "Will Fossard",
-    password: "password123",
+    password: bcrypt.hashSync("password123", 10),
     role: "admin",
   },
   {
     email: "usertestemail1@email.com",
     name: "usertest1",
-    password: "password1234",
+    password: bcrypt.hashSync("password1234", 10),
     role: "user",
   },
   {
     email: "usertestemail2@email.com",
     name: "usertest2",
-    password: "password12345",
+    password: bcrypt.hashSync("password12345", 10),
     role: "user",
   },
   {
     email: "usertestemail3@email.com",
     name: "usertest3",
-    password: "password123456",
+    password: bcrypt.hashSync("password123456", 10),
     role: "user",
   },
   {
     email: "usertestemail4@email.com",
     name: "usertest4",
-    password: "password1234567",
+    password: bcrypt.hashSync("password1234567", 10),
     role: "staff",
   },
   {
     email: "usertestemail5@email.com",
     name: "usertest5",
-    password: "password12345678",
+    password: bcrypt.hashSync("password12345678", 10),
     role: "staff",
   },
 ];
+
+module.exports = { usersData };

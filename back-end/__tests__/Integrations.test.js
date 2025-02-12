@@ -69,4 +69,96 @@ describe("USERS testing", () => {
         });
     });
   });
+  describe("POST login and authenticate registered user", () => {
+    test("POST 201: returns the user object that has just signed in if username and password are correct. includes auth token", () => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "willfossard@outlook.com", password: "password123" })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            user_id: 1,
+            name: "Will Fossard",
+            email: "willfossard@outlook.com",
+            password: expect.any(String),
+            role: "admin",
+            token: expect.any(String),
+          });
+        });
+    });
+    test("POST 201: ignores any additional information sent in request", () => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail1@email.com", password: "password1234", age: 44 })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            user_id: 2,
+            name: "usertest1",
+            email: "usertestemail1@email.com",
+            password: expect.any(String),
+            role: "user",
+            token: expect.any(String),
+          });
+          expect(body.user.hasOwnProperty("age")).toBe(false);
+        });
+    });
+    test("POST 400: bad request response returned if missing required information", () => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "willfossard@outlook.com" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("both email and password are required");
+        });
+    });
+    test("POST 401: returns a message showing invalid authorisation credentials", () => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "willfossard@outlook.com", password: "wrongpassword" })
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("invalid password");
+        });
+    });
+    test("POST 404: returns a message indicating the email does not exist", () => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "fakeemail@email.com", password: "fakepassword" })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("that email address does not exist in the system");
+        });
+    });
+  });
+  describe.only("GET a list of all users (admin only)", () => {
+    let adminUser;
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "willfossard@outlook.com", password: "password123" })
+        .then(({ body }) => {
+          adminUser = body.user;
+        });
+    });
+
+    test("GET 200: returns a list of all users in the db", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .then(({ body }) => {
+          expect(body.users.length).toBe(7);
+          body.users.forEach((user) => {
+            expect(user).toMatchObject({
+              user_id: expect.any(Number),
+              email: expect.any(String),
+              name: expect.any(String),
+              role: expect.any(String),
+            });
+          });
+        });
+    });
+  });
 });

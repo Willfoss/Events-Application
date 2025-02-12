@@ -45,7 +45,7 @@ const seed = ({ eventsData, usersData, attendeesData }) => {
     })
     .then(() => {
       const usersQueryString = "INSERT INTO users (email, name, password, role) VALUES %L RETURNING *;";
-      const usersFormattedQuery = usersData.map(({ email, name, password, role }) => {
+      const usersFormattedQuery = usersData.usersData.users.map(({ email, name, password, role }) => {
         return [email, name, password, role];
       });
       return db.query(format(usersQueryString, usersFormattedQuery));
