@@ -208,7 +208,7 @@ describe("USERS testing", () => {
         });
     });
   });
-  describe.only("PATCH role of users/staff/admin (admin only)", () => {
+  describe("PATCH role of users/staff/admin (admin only)", () => {
     let adminUser;
     let userUser;
     let staffUser;
@@ -331,6 +331,122 @@ describe("USERS testing", () => {
         .expect(403)
         .then(({ body }) => {
           expect(body.message).toBe("unauthorised");
+        });
+    });
+  });
+});
+
+describe.only("EVENTS testing", () => {
+  let adminUser;
+  let userUser;
+  let staffUser;
+
+  beforeEach(() => {
+    return request(app)
+      .post("/api/users/login")
+      .send({ email: "willfossard@outlook.com", password: "password123" })
+      .then(({ body }) => {
+        adminUser = body.user;
+      });
+  });
+
+  beforeEach(() => {
+    return request(app)
+      .post("/api/users/login")
+      .send({ email: "usertestemail1@email.com", password: "password1234" })
+      .then(({ body }) => {
+        userUser = body.user;
+      });
+  });
+
+  beforeEach(() => {
+    return request(app)
+      .post("/api/users/login")
+      .send({ email: "usertestemail4@email.com", password: "password1234567" })
+      .then(({ body }) => {
+        staffUser = body.user;
+      });
+  });
+
+  describe("GET all events", () => {
+    test("GET 200: returns a list of all available events if a user attempts to access", () => {
+      return request(app)
+        .get("/api/events")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(5);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: expect.any(String),
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 200: returns a list of all available events if a staff member attempts to access", () => {
+      return request(app)
+        .get("/api/events")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(5);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: expect.any(String),
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 200: returns a list of all available events if an admin attempts to access", () => {
+      return request(app)
+        .get("/api/events")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(5);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: expect.any(String),
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 401: if a user not in the db attempts to access the endpoint it returns a not authenticated message", () => {
+      return request(app)
+        .get("/api/events")
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
         });
     });
   });
