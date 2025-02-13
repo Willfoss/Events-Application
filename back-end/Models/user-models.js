@@ -40,4 +40,29 @@ function fetchAllUsers() {
   });
 }
 
-module.exports = { postNewUser, signInUser, fetchAllUsers };
+function updateUserRole(user_id, updatedRole) {
+  const allowedPatch = ["user", "staff", "admin"];
+  const patchRequest = [];
+
+  if (!user_id || !updatedRole) {
+    return Promise.reject({ status: 400, message: "bad request" });
+  }
+
+  if (allowedPatch.includes(updatedRole.toLowerCase())) {
+    patchRequest.push(updatedRole);
+    patchRequest.push(user_id);
+  } else {
+    return Promise.reject({ status: 400, message: "bad request" });
+  }
+
+  const queryString = `UPDATE users
+  SET role = $1
+  WHERE user_id = $2
+  RETURNING*;`;
+
+  return db.query(queryString, patchRequest).then(({ rows }) => {
+    return rows[0];
+  });
+}
+
+module.exports = { postNewUser, signInUser, fetchAllUsers, updateUserRole };

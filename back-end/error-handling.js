@@ -9,6 +9,9 @@ function databaseErrorHandler(error, request, response, next) {
   if (error.code === "23505") {
     response.status(409).send({ message: "email address is already registered" });
   }
+  if (error.code === "22P02") {
+    response.status(400).send({ message: "bad request" });
+  }
   next(error);
 }
 

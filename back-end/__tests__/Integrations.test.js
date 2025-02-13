@@ -208,4 +208,130 @@ describe("USERS testing", () => {
         });
     });
   });
+  describe.only("PATCH role of users/staff/admin (admin only)", () => {
+    let adminUser;
+    let userUser;
+    let staffUser;
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "willfossard@outlook.com", password: "password123" })
+        .then(({ body }) => {
+          adminUser = body.user;
+        });
+    });
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail1@email.com", password: "password1234" })
+        .then(({ body }) => {
+          userUser = body.user;
+        });
+    });
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail4@email.com", password: "password1234567" })
+        .then(({ body }) => {
+          staffUser = body.user;
+        });
+    });
+
+    test("PATCH 200: returns the updated user object when changing user role to staff", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({ user_id: 2, role: "staff" })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            user_id: 2,
+            email: "usertestemail1@email.com",
+            name: "usertest1",
+            password: expect.any(String),
+            role: "staff",
+          });
+        });
+    });
+
+    test("PATCH 200: ignores any additional information sent in the request", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({ user_id: 2, role: "staff", age: 40 })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            user_id: 2,
+            email: "usertestemail1@email.com",
+            name: "usertest1",
+            password: expect.any(String),
+            role: "staff",
+          });
+          expect(body.user.hasOwnProperty("age")).toBe(false);
+        });
+    });
+    test("patch 400: returns bad request if required information is missing from the request", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({ user_id: 3 })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("patch 400: returns bad request if non valid patch request is made", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({ user_id: 3, role: "superduperadmin" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("patch 400: returns bad request if user_id is provided in wrong data type", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({ user_id: "three", role: "staff" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("PATCH 401: returns a not authenticated message if somebody who is not a user in the db tries to access the data", () => {
+      return request(app)
+        .patch("/api/users")
+        .send({ user_id: 3, role: "staff" })
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("PATCH 403: returns a not authorised message if a user tries to access the data", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ user_id: 3, role: "staff" })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+    test("PATCH 403: returns a not authorised message if a user tries to access the data", () => {
+      return request(app)
+        .patch("/api/users")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({ user_id: 3, role: "staff" })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+  });
 });
