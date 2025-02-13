@@ -1,4 +1,4 @@
-const { fetchAllEvents } = require("../Models/event-models");
+const { fetchAllEvents, fetchEventByEventId } = require("../Models/event-models");
 
 function getAllEvents(request, response, next) {
   fetchAllEvents()
@@ -10,4 +10,15 @@ function getAllEvents(request, response, next) {
     });
 }
 
-module.exports = { getAllEvents };
+function getEventByEventId(request, response, next) {
+  const { event_id } = request.params;
+  fetchEventByEventId(event_id)
+    .then((event) => {
+      response.send({ event });
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { getAllEvents, getEventByEventId };
