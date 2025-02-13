@@ -450,7 +450,7 @@ describe("EVENTS testing", () => {
         });
     });
   });
-  describe.only("GET event by event_id", () => {
+  describe("GET event by event_id", () => {
     test("GET 200: returns the event associated with the id in addition to an extra key/value pair of number of attendees for a user", () => {
       return request(app)
         .get("/api/events/5")
@@ -522,6 +522,37 @@ describe("EVENTS testing", () => {
             number_of_attendees: 6,
           });
         });
+    });
+    test("GET 400: returns a bad request if event_id provided as wrong datatype", () => {
+      return request(app)
+        .get("/api/events/five")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("GET 401: returns an unauthenticated message if a user not in the db tries to access the information", () => {
+      return request(app)
+        .get("/api/events/5")
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("GET 404: returns event not found if no event currently exists with that id", () => {
+      return request(app)
+        .get("/api/events/36")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("event not found");
+        });
+    });
+  });
+  describe.only("POST event", () => {
+    test("POST 200: returns the newly created event (if staff member only)", () => {
+      return request(app);
     });
   });
 });

@@ -14,8 +14,13 @@ function fetchEventByEventId(event_id) {
   GROUP BY events.event_id;`;
 
   return db.query(queryString, [event_id]).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, message: "event not found" });
+    }
     return rows[0];
   });
 }
 
-module.exports = { fetchAllEvents, fetchEventByEventId };
+function createNewEvent(event_title, event_description, host, image, location, start_date, end_date, start_time, end_time, link) {}
+
+module.exports = { fetchAllEvents, fetchEventByEventId, createNewEvent };

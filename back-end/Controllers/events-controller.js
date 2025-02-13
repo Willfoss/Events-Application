@@ -1,4 +1,4 @@
-const { fetchAllEvents, fetchEventByEventId } = require("../Models/event-models");
+const { fetchAllEvents, fetchEventByEventId, createNewEvent } = require("../Models/event-models");
 
 function getAllEvents(request, response, next) {
   fetchAllEvents()
@@ -21,4 +21,15 @@ function getEventByEventId(request, response, next) {
     });
 }
 
-module.exports = { getAllEvents, getEventByEventId };
+function postNewEvent(request, response, next) {
+  const { event_title, event_description, host, image, location, start_date, end_date, start_time, end_time, link } = request.body;
+  createNewEvent(event_title, event_description, host, image, location, start_date, end_date, start_time, end_time, link)
+    .then((event) => {
+      response.status(201).send({ event });
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { getAllEvents, getEventByEventId, postNewEvent };
