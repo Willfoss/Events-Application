@@ -336,7 +336,7 @@ describe("USERS testing", () => {
   });
 });
 
-describe.only("EVENTS testing", () => {
+describe("EVENTS testing", () => {
   let adminUser;
   let userUser;
   let staffUser;
@@ -455,6 +455,54 @@ describe.only("EVENTS testing", () => {
       return request(app)
         .get("/api/events/5")
         .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 5,
+            event_title: "Test event 5",
+            event_description:
+              "Lorem ipsum odor amet, consectetuer adipiscing elit. Convallis non nostra luctus semper tincidunt nam. Ad vestibulum cursus amet per vivamus congue per curabitur. Hendrerit faucibus pretium habitant; imperdiet potenti diam eleifend curae.",
+            host: "test host 5",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test address 5",
+            start_date: "19/02/2025",
+            end_date: "19/02/2025",
+            start_time: "20:00",
+            end_time: "21:00",
+            link: "www.genericeventwebsite5.com",
+            number_of_attendees: 6,
+          });
+        });
+    });
+    test("GET 200: returns the event associated with the id in addition to an extra key/value pair of number of attendees for a staff member", () => {
+      return request(app)
+        .get("/api/events/5")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 5,
+            event_title: "Test event 5",
+            event_description:
+              "Lorem ipsum odor amet, consectetuer adipiscing elit. Convallis non nostra luctus semper tincidunt nam. Ad vestibulum cursus amet per vivamus congue per curabitur. Hendrerit faucibus pretium habitant; imperdiet potenti diam eleifend curae.",
+            host: "test host 5",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test address 5",
+            start_date: "19/02/2025",
+            end_date: "19/02/2025",
+            start_time: "20:00",
+            end_time: "21:00",
+            link: "www.genericeventwebsite5.com",
+            number_of_attendees: 6,
+          });
+        });
+    });
+    test("GET 200: returns the event associated with the id in addition to an extra key/value pair of number of attendees for an admin", () => {
+      return request(app)
+        .get("/api/events/5")
+        .set({ authorization: `Bearer ${adminUser.token}` })
         .expect(200)
         .then(({ body }) => {
           expect(body.event).toMatchObject({
