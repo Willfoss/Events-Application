@@ -550,9 +550,206 @@ describe("EVENTS testing", () => {
         });
     });
   });
-  describe.only("POST event", () => {
+  describe("POST event", () => {
     test("POST 200: returns the newly created event (if staff member only)", () => {
-      return request(app);
+      return request(app)
+        .post("/api/events")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "test suite link",
+        })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 6,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: "test suite link",
+          });
+        });
+    });
+    test("POST 200: returns the newly created event if no link is provided (if staff member only)", () => {
+      return request(app)
+        .post("/api/events")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+        })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 6,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: null,
+          });
+        });
+    });
+    test("POST 200: returns the newly created event if admin ", () => {
+      return request(app)
+        .post("/api/events")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+        })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 6,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: null,
+          });
+        });
+    });
+    test("POST 200: ignores any additional information in the request", () => {
+      return request(app)
+        .post("/api/events")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          i_dont_exist: "i don't exist",
+        })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 6,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: null,
+          });
+          expect(body.event.hasOwnProperty("i_dont_exist")).toBe(false);
+        });
+    });
+    test("POST 400: returns a bad request message if required information is missing in the request", () => {
+      return request(app)
+        .post("/api/events")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+        })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("POST 401: returns a not authenticated message when a user who is not registered is trying to make the request", () => {
+      return request(app)
+        .post("/api/events")
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+        })
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("POST 403: returns a not authorised message when a user is trying to make the request", () => {
+      return request(app)
+        .post("/api/events")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+        })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
     });
   });
 });

@@ -5,6 +5,6 @@ const { authoriseStaff } = require("../middleware/staffAuth");
 
 eventsRouter.route("/").get(authoriseUser, getAllEvents);
 eventsRouter.route("/:event_id").get(authoriseUser, getEventByEventId);
-eventsRouter.route("/:event_id").patch(authoriseStaff, postNewEvent);
+eventsRouter.route("/").post(authoriseStaff, postNewEvent);
 
 module.exports = eventsRouter;
