@@ -1002,7 +1002,7 @@ describe("EVENTS testing", () => {
   });
 });
 
-describe.only("ATTENDEES testing", () => {
+describe("ATTENDEES testing", () => {
   let adminUser;
   let userUser;
   let staffUser;
@@ -1055,7 +1055,7 @@ describe.only("ATTENDEES testing", () => {
     test("GET 200: returns a list of all attendees for a particular event if an admin member makes request", () => {
       return request(app)
         .get("/api/attendees/5")
-        .set({ authorization: `Bearer ${staffUser.token}` })
+        .set({ authorization: `Bearer ${adminUser.token}` })
         .expect(200)
         .then(({ body }) => {
           expect(body.attendees.length).toBe(6);
@@ -1067,6 +1067,51 @@ describe.only("ATTENDEES testing", () => {
               name: expect.any(String),
             });
           });
+        });
+    });
+    test("GET 200: returns an empty array if event exists but no users are attending yet", () => {
+      return request(app)
+        .get("/api/attendees/1")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          console.log(body);
+          expect(body.attendees).toEqual([]);
+        });
+    });
+    test("GET 400: returns a bad request if event id given as wrong data type", () => {
+      return request(app)
+        .get("/api/attendees/five")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("GET 401: returns a not authenticated message if a user not registered in the db attempted to get the information", () => {
+      return request(app)
+        .get("/api/attendees/5")
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("GET 403: returns a unauthorised message if a user (not staff or admin) tries to get the info", () => {
+      return request(app)
+        .get("/api/attendees/five")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+    test("GET 404: returns a not found message if the event does not exist", () => {
+      return request(app)
+        .get("/api/attendees/13")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("event not found");
         });
     });
   });

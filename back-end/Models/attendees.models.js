@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { fetchEventByEventId } = require("./event-models");
 
 function fetchAttendeesByEventId(event_id) {
   const queryString = `SELECT events.event_id, attendees.email, attendees.attendee_id, users.name FROM events
@@ -7,8 +8,12 @@ function fetchAttendeesByEventId(event_id) {
     WHERE events.event_id = $1
     GROUP BY users.name, attendees.attendee_id, attendees.email, events.event_id`;
 
-  return db.query(queryString, [event_id]).then(({ rows }) => {
-    return rows;
+  return Promise.all([fetchEventByEventId(event_id), db.query(queryString, [event_id])]).then(([doesEventExist, query]) => {
+    if (query.rows.length === 1 && query.rows[0].email === null) {
+      return [];
+    } else {
+      return query.rows;
+    }
   });
 }
 
