@@ -1003,6 +1003,37 @@ describe("EVENTS testing", () => {
 });
 
 describe.only("ATTENDEES testing", () => {
+  let adminUser;
+  let userUser;
+  let staffUser;
+
+  beforeEach(() => {
+    return request(app)
+      .post("/api/users/login")
+      .send({ email: "willfossard@outlook.com", password: "password123" })
+      .then(({ body }) => {
+        adminUser = body.user;
+      });
+  });
+
+  beforeEach(() => {
+    return request(app)
+      .post("/api/users/login")
+      .send({ email: "usertestemail1@email.com", password: "password1234" })
+      .then(({ body }) => {
+        userUser = body.user;
+      });
+  });
+
+  beforeEach(() => {
+    return request(app)
+      .post("/api/users/login")
+      .send({ email: "usertestemail4@email.com", password: "password1234567" })
+      .then(({ body }) => {
+        staffUser = body.user;
+      });
+  });
+
   describe("GET all attendees for an event", () => {
     test("GET 200: returns a list of all attendees for a particular event if staff member makes request", () => {
       return request(app)
@@ -1014,6 +1045,24 @@ describe.only("ATTENDEES testing", () => {
           body.attendees.forEach((attendee) => {
             expect(attendee).toMatchObject({
               attendee_id: expect.any(Number),
+              event_id: expect.any(Number),
+              email: expect.any(String),
+              name: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 200: returns a list of all attendees for a particular event if an admin member makes request", () => {
+      return request(app)
+        .get("/api/attendees/5")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.attendees.length).toBe(6);
+          body.attendees.forEach((attendee) => {
+            expect(attendee).toMatchObject({
+              attendee_id: expect.any(Number),
+              event_id: expect.any(Number),
               email: expect.any(String),
               name: expect.any(String),
             });

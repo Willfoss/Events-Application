@@ -21,7 +21,7 @@ module.exports = [
   },
   {
     event_id: 5,
-    email: "usertestemail4@email.com",
+    email: "usertestemail5@email.com",
   },
   {
     event_id: 4,
