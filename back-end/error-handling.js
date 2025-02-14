@@ -12,6 +12,9 @@ function databaseErrorHandler(error, request, response, next) {
   if (error.code === "22P02") {
     response.status(400).send({ message: "bad request" });
   }
+  if (error.code === "23503") {
+    response.status(404).send({ message: "event not found" });
+  }
   next(error);
 }
 

@@ -1115,4 +1115,92 @@ describe("ATTENDEES testing", () => {
         });
     });
   });
+  describe("POST a new attendee for an event as a user", () => {
+    test("POST 201: returns the new attendee if a user registers for an event", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ event_id: 4, email: "usertestemail1@email.com" })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.attendee).toMatchObject({
+            attendee_id: 13,
+            event_id: 4,
+            email: "usertestemail1@email.com",
+          });
+        });
+    });
+    test("POST 201: returns the new attendee if a staff member registers for an event", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({ event_id: 4, email: "usertestemail4@email.com" })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.attendee).toMatchObject({
+            attendee_id: 13,
+            event_id: 4,
+            email: "usertestemail4@email.com",
+          });
+        });
+    });
+    test("POST 201: returns the new attendee if an admin registers for an event", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({ event_id: 4, email: "willfossard@outlook.com" })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.attendee).toMatchObject({
+            attendee_id: 13,
+            event_id: 4,
+            email: "willfossard@outlook.com",
+          });
+        });
+    });
+    test("POST 201: ignores additional information sent in the request", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ event_id: 4, email: "willfossard@outlook.com", age: 40 })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.attendee).toMatchObject({
+            attendee_id: 13,
+            event_id: 4,
+            email: "willfossard@outlook.com",
+          });
+          expect(body.attendee.hasOwnProperty("age")).toBe(false);
+        });
+    });
+    test("POST 400: sends a bad request if event_id is sent as wrong data type", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ event_id: "four", email: "willfossard@outlook.com" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("POST 401: sends user not authenticated if a user not registered in the db is trying to access the information", () => {
+      return request(app)
+        .post("/api/attendees")
+        .send({ event_id: "four", email: "willfossard@outlook.com" })
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("POST 404: sends a not found message if no event exists by that id", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ event_id: 13, email: "willfossard@outlook.com" })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("event not found");
+        });
+    });
+  });
 });

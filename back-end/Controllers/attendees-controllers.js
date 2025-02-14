@@ -1,4 +1,4 @@
-const { fetchAttendeesByEventId } = require("../Models/attendees.models");
+const { fetchAttendeesByEventId, registerForEvent } = require("../Models/attendees.models");
 
 function getAttendeesByEventId(request, response, next) {
   const { event_id } = request.params;
@@ -11,4 +11,15 @@ function getAttendeesByEventId(request, response, next) {
     });
 }
 
-module.exports = { getAttendeesByEventId };
+function postNewAttendee(request, response, next) {
+  const { event_id, email } = request.body;
+  registerForEvent(event_id, email)
+    .then((attendee) => {
+      response.status(201).send({ attendee });
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { getAttendeesByEventId, postNewAttendee };

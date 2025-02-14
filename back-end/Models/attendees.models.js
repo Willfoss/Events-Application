@@ -17,4 +17,18 @@ function fetchAttendeesByEventId(event_id) {
   });
 }
 
-module.exports = { fetchAttendeesByEventId };
+function registerForEvent(event_id, email) {
+  const queryString = `INSERT INTO attendees (event_id, email)
+    VALUES ($1, $2)
+    RETURNING *`;
+
+  return db.query(queryString, [event_id, email]).then(({ rows }) => {
+    console.log(rows);
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, message: "event not found" });
+    }
+    return rows[0];
+  });
+}
+
+module.exports = { fetchAttendeesByEventId, registerForEvent };
