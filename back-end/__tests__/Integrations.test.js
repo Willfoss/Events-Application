@@ -752,4 +752,273 @@ describe("EVENTS testing", () => {
         });
     });
   });
+  describe("PATCH event", () => {
+    test("PATCH 200: staff members can edit the event details", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 2,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: "another link",
+          });
+        });
+    });
+    test("PATCH 200: admins can edit the event details", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 2,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: "another link",
+          });
+        });
+    });
+    test("PATCH 200: updates are made only if a couple of property values are patched", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 2,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test host 2",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test address 2",
+            start_date: "24/01/2025",
+            end_date: "25/02/2025",
+            start_time: "19:00",
+            end_time: "12:00",
+            link: "www.genericeventwebsite2.com",
+          });
+        });
+    });
+    test("PATCH 200: updates are made even if the property is far down the list", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          start_time: "18:00",
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 2,
+            event_title: "Test event 2",
+            event_description:
+              "Lorem ipsum odor amet, consectetuer adipiscing elit. Convallis non nostra luctus semper tincidunt nam. Ad vestibulum cursus amet per vivamus congue per curabitur. Hendrerit faucibus pretium habitant; imperdiet potenti diam eleifend curae.",
+            host: "test host 2",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test address 2",
+            start_date: "24/01/2025",
+            end_date: "25/02/2025",
+            start_time: "18:00",
+            end_time: "12:00",
+            link: "www.genericeventwebsite2.com",
+          });
+        });
+    });
+    test("PATCH 200: ignores additional information sent in the request", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+          rating: 10,
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.event).toMatchObject({
+            event_id: 2,
+            event_title: "test suite title",
+            event_description: "test suite event description",
+            host: "test suite host",
+            image:
+              "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+            location: "test suite location",
+            start_date: "13/02/2025",
+            end_date: "13/02/2025",
+            start_time: "17:00",
+            end_time: "20:00",
+            link: "another link",
+          });
+          expect(body.event.hasOwnProperty("rating")).toBe(false);
+        });
+    });
+    test("PATCH 400: returns a bad request if event_id is provided as the wrong data type", () => {
+      return request(app)
+        .patch("/api/events/two")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+        })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("PATCH 401: if a user not registered in the db tries to patch the request they get a no authenticated message", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+        })
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("PATCH 403: if a user tries to send a patch request they receive a not authorised message", () => {
+      return request(app)
+        .patch("/api/events/2")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+        })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+    test("PATCH 404: if a user tries to send a patch request they receive a not authorised message", () => {
+      return request(app)
+        .patch("/api/events/36")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .send({
+          event_title: "test suite title",
+          event_description: "test suite event description",
+          host: "test suite host",
+          image:
+            "https://cdn-cjhkj.nitrocdn.com/krXSsXVqwzhduXLVuGLToUwHLNnSxUxO/assets/images/optimized/rev-b135bb1/spotme.com/wp-content/uploads/2020/07/Hero-1.jpg",
+          location: "test suite location",
+          start_date: "13/02/2025",
+          end_date: "13/02/2025",
+          start_time: "17:00",
+          end_time: "20:00",
+          link: "another link",
+        })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("event not found");
+        });
+    });
+  });
+});
+
+describe.only("ATTENDEES testing", () => {
+  describe("GET all attendees for an event", () => {
+    test("GET 200: returns a list of all attendees for a particular event if staff member makes request", () => {
+      return request(app)
+        .get("/api/attendees/5")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.attendees.length).toBe(6);
+          body.attendees.forEach((attendee) => {
+            expect(attendee).toMatchObject({
+              attendee_id: expect.any(Number),
+              email: expect.any(String),
+              name: expect.any(String),
+            });
+          });
+        });
+    });
+  });
 });

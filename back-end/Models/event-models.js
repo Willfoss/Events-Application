@@ -1,3 +1,4 @@
+const { patch } = require("../app");
 const db = require("../db/connection");
 
 function fetchAllEvents() {
@@ -42,4 +43,69 @@ function createNewEvent(event_title, event_description, host, image, location, s
   });
 }
 
-module.exports = { fetchAllEvents, fetchEventByEventId, createNewEvent };
+function updateExistingEvent(event_id, event_title, event_description, host, image, location, start_date, end_date, start_time, end_time, link) {
+  let queryString = `UPDATE events SET`;
+
+  const patchArray = [event_id];
+
+  if (event_title) {
+    queryString += ` event_title = $2`;
+    patchArray.push(event_title);
+  }
+  if (event_description) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(event_description);
+    queryString += ` event_description = $${patchArray.length}`;
+  }
+  if (host) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(host);
+    queryString += ` host = $${patchArray.length}`;
+  }
+  if (image) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(image);
+    queryString += ` image = $${patchArray.length}`;
+  }
+  if (location) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(location);
+    queryString += ` location = $${patchArray.length}`;
+  }
+  if (start_date) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(start_date);
+    queryString += ` start_date = $${patchArray.length}`;
+  }
+  if (end_date) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(end_date);
+    queryString += ` end_date = $${patchArray.length}`;
+  }
+  if (start_time) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(start_time);
+    queryString += ` start_time = $${patchArray.length}`;
+  }
+  if (end_time) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(end_time);
+    queryString += ` end_time = $${patchArray.length}`;
+  }
+  if (link) {
+    if (patchArray.length > 1) queryString += `,`;
+    patchArray.push(link);
+    queryString += ` link = $${patchArray.length}`;
+  }
+
+  queryString += ` WHERE event_id = $1 RETURNING *;`;
+
+  return db.query(queryString, patchArray).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, message: "event not found" });
+    }
+    return rows[0];
+  });
+}
+
+module.exports = { fetchAllEvents, fetchEventByEventId, createNewEvent, updateExistingEvent };
