@@ -1,5 +1,5 @@
 const { authoriseStaff } = require("../middleware/staffAuth");
-const { getAttendeesByEventId } = require();
+const { getAttendeesByEventId } = require("../Controllers/attendees-controllers");
 
 const attendeesRouter = require("express").Router();
 
