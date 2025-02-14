@@ -1,50 +1,50 @@
 module.exports = [
   {
     event_id: 5,
-    email: "willfossard@outlook.com",
+    user_id: 1,
   },
   {
     event_id: 5,
-    email: "usertestemail1@email.com",
+    user_id: 2,
   },
   {
     event_id: 5,
-    email: "usertestemail2@email.com",
+    user_id: 3,
   },
   {
     event_id: 5,
-    email: "usertestemail3@email.com",
+    user_id: 4,
   },
   {
     event_id: 5,
-    email: "usertestemail4@email.com",
+    user_id: 5,
   },
   {
     event_id: 5,
-    email: "usertestemail4@email.com",
+    user_id: 6,
   },
   {
     event_id: 4,
-    email: "usertestemail1@email.com",
+    user_id: 2,
   },
   {
     event_id: 4,
-    email: "usertestemail2@email.com",
+    user_id: 3,
   },
   {
     event_id: 4,
-    email: "usertestemail3@email.com",
+    user_id: 4,
   },
   {
     event_id: 3,
-    email: "usertestemail1@email.com",
+    user_id: 2,
   },
   {
     event_id: 3,
-    email: "usertestemail2@email.com",
+    user_id: 3,
   },
   {
     event_id: 2,
-    email: "usertestemail2@email.com",
+    user_id: 3,
   },
 ];

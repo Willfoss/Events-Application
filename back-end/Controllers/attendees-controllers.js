@@ -1,4 +1,4 @@
-const { fetchAttendeesByEventId, registerForEvent } = require("../Models/attendees.models");
+const { fetchAttendeesByEventId, registerForEvent, removeEventAttendee } = require("../Models/attendees.models");
 
 function getAttendeesByEventId(request, response, next) {
   const { event_id } = request.params;
@@ -12,8 +12,8 @@ function getAttendeesByEventId(request, response, next) {
 }
 
 function postNewAttendee(request, response, next) {
-  const { event_id, email } = request.body;
-  registerForEvent(event_id, email)
+  const { event_id, user_id } = request.body;
+  registerForEvent(event_id, user_id)
     .then((attendee) => {
       response.status(201).send({ attendee });
     })
@@ -22,4 +22,16 @@ function postNewAttendee(request, response, next) {
     });
 }
 
-module.exports = { getAttendeesByEventId, postNewAttendee };
+function deleteEventAttendee(request, response, next) {
+  const { logged_in_user_id } = request.body;
+  const { event_id, user_id } = request.params;
+  removeEventAttendee(logged_in_user_id, event_id, user_id)
+    .then((attendee) => {
+      response.sendStatus(204);
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { getAttendeesByEventId, postNewAttendee, deleteEventAttendee };

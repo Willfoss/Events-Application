@@ -1120,13 +1120,13 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ event_id: 4, email: "usertestemail1@email.com" })
+        .send({ event_id: 4, user_id: 1 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
             event_id: 4,
-            email: "usertestemail1@email.com",
+            user_id: 1,
           });
         });
     });
@@ -1134,13 +1134,13 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${staffUser.token}` })
-        .send({ event_id: 4, email: "usertestemail4@email.com" })
+        .send({ event_id: 4, user_id: 2 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
             event_id: 4,
-            email: "usertestemail4@email.com",
+            user_id: 2,
           });
         });
     });
@@ -1148,13 +1148,13 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${adminUser.token}` })
-        .send({ event_id: 4, email: "willfossard@outlook.com" })
+        .send({ event_id: 4, user_id: 1 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
             event_id: 4,
-            email: "willfossard@outlook.com",
+            user_id: 1,
           });
         });
     });
@@ -1162,13 +1162,13 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ event_id: 4, email: "willfossard@outlook.com", age: 40 })
+        .send({ event_id: 4, user_id: 1, age: 40 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
             event_id: 4,
-            email: "willfossard@outlook.com",
+            user_id: 1,
           });
           expect(body.attendee.hasOwnProperty("age")).toBe(false);
         });
@@ -1177,7 +1177,7 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ event_id: "four", email: "willfossard@outlook.com" })
+        .send({ event_id: "four", user_id: 1 })
         .expect(400)
         .then(({ body }) => {
           expect(body.message).toBe("bad request");
@@ -1186,7 +1186,7 @@ describe("ATTENDEES testing", () => {
     test("POST 401: sends user not authenticated if a user not registered in the db is trying to access the information", () => {
       return request(app)
         .post("/api/attendees")
-        .send({ event_id: "four", email: "willfossard@outlook.com" })
+        .send({ event_id: "four", user_id: 1 })
         .expect(401)
         .then(({ body }) => {
           expect(body.message).toBe("user not authenticated");
@@ -1196,10 +1196,68 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ event_id: 13, email: "willfossard@outlook.com" })
+        .send({ event_id: 13, user_id: 1 })
         .expect(404)
         .then(({ body }) => {
           expect(body.message).toBe("event not found");
+        });
+    });
+  });
+  describe("DELETE attendee", () => {
+    test("DELETE 204: removes the attendee from the event", () => {
+      return request(app)
+        .delete("/api/attendees/5/2")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ logged_in_user_id: userUser.user_id })
+        .expect(204);
+    });
+    test("DELETE 400: returns a bad request if user_id is not send with request", () => {
+      return request(app)
+        .delete("/api/attendees/5/2")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("DELETE 400: returns a bad request data is sent as wrong data type", () => {
+      return request(app)
+        .delete("/api/attendees/five/2")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ logged_in_user_id: userUser.user_id })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("DELETE 401: returns a user not authenticated if a non registered user attemps the request", () => {
+      return request(app)
+        .delete("/api/attendees/5/2")
+        .send({ logged_in_user_id: userUser.user_id })
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("DELETE 403: returns an unauthorised if the user who is logged in does not match the attendee user_id", () => {
+      return request(app)
+        .delete("/api/attendees/5/2")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ logged_in_user_id: 5 })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+    test("DELETE 404: returns a not found message if the attendee does not exist", () => {
+      return request(app)
+        .delete("/api/attendees/5/13")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ logged_in_user_id: 5 })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("attendee not found");
         });
     });
   });

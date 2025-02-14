@@ -40,7 +40,7 @@ const seed = ({ eventsData, usersData, attendeesData }) => {
       return db.query(`CREATE TABLE attendees (
       attendee_id SERIAL PRIMARY KEY,
       event_id INT REFERENCES events(event_id) ON DELETE CASCADE NOT NULL,
-      email VARCHAR REFERENCES users(email) ON DELETE CASCADE NOT NULL
+      user_id INT REFERENCES users(user_id) ON DELETE CASCADE NOT NULL
       );`);
     })
     .then(() => {
@@ -61,9 +61,9 @@ const seed = ({ eventsData, usersData, attendeesData }) => {
       return db.query(format(eventsQueryString, eventsFormattedQuery));
     })
     .then(() => {
-      const attendeesQueryString = "INSERT INTO attendees (event_id, email) VALUES %L RETURNING *;";
-      const attendeeFormattedQuery = attendeesData.map(({ event_id, email }) => {
-        return [event_id, email];
+      const attendeesQueryString = "INSERT INTO attendees (event_id, user_id) VALUES %L RETURNING *;";
+      const attendeeFormattedQuery = attendeesData.map(({ event_id, user_id }) => {
+        return [event_id, user_id];
       });
       return db.query(format(attendeesQueryString, attendeeFormattedQuery));
     });
