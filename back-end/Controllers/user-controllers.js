@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { postNewUser, signInUser, fetchAllUsers, updateUserRole } = require("../Models/user-models");
+const { postNewUser, signInUser, fetchAllUsers, updateUserRole, fetchEventsForUser } = require("../Models/user-models");
 
 function registerUser(request, response, next) {
   const { email, name, password } = request.body;
@@ -45,4 +45,16 @@ function patchUserRole(request, response, next) {
     });
 }
 
-module.exports = { registerUser, loginUser, getAllUsers, patchUserRole };
+function getEventsForUser(request, response, next) {
+  const { user_id } = request.params;
+  const logged_in_user_id = request.user;
+  fetchEventsForUser(user_id, logged_in_user_id)
+    .then((events) => {
+      response.send({ events });
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { registerUser, loginUser, getAllUsers, patchUserRole, getEventsForUser };

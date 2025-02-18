@@ -16,7 +16,7 @@ describe("USERS testing", () => {
         .expect(201)
         .then(({ body }) => {
           expect(body.user).toMatchObject({
-            user_id: 7,
+            user_id: 8,
             name: "testSuiteName",
             email: "testSuite@email.com",
             password: expect.any(String),
@@ -41,7 +41,7 @@ describe("USERS testing", () => {
         .expect(201)
         .then(({ body }) => {
           expect(body.user).toMatchObject({
-            user_id: 7,
+            user_id: 8,
             name: "testSuiteName",
             email: "testSuite@email.com",
             password: expect.any(String),
@@ -169,7 +169,7 @@ describe("USERS testing", () => {
         .expect(200)
         .set({ authorization: `Bearer ${adminUser.token}` })
         .then(({ body }) => {
-          expect(body.users.length).toBe(6);
+          expect(body.users.length).toBe(7);
           body.users.forEach((user) => {
             expect(user).toMatchObject({
               user_id: expect.any(Number),
@@ -328,6 +328,92 @@ describe("USERS testing", () => {
         .patch("/api/users")
         .set({ authorization: `Bearer ${staffUser.token}` })
         .send({ user_id: 3, role: "staff" })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+  });
+  describe("GET events by username", () => {
+    let userUser;
+    let userUser2;
+    let userUser3;
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail1@email.com", password: "password1234" })
+        .then(({ body }) => {
+          userUser = body.user;
+        });
+    });
+
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail2@email.com", password: "password12345" })
+        .then(({ body }) => {
+          userUser2 = body.user;
+        });
+    });
+    beforeEach(() => {
+      return request(app)
+        .post("/api/users/login")
+        .send({ email: "usertestemail6@email.com", password: "password123456789" })
+        .then(({ body }) => {
+          userUser3 = body.user;
+        });
+    });
+
+    test("GET 200: returns all the events for a particular user, provided that user is logged in", () => {
+      return request(app)
+        .get("/api/users/2/events")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(3);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              user_id: 2,
+              email: "usertestemail1@email.com",
+              name: "usertest1",
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: expect.any(String),
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 200: returns an empty array if user exists but is attending no events", () => {
+      return request(app)
+        .get("/api/users/7/events")
+        .set({ authorization: `Bearer ${userUser3.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events).toEqual([]);
+        });
+    });
+    test("GET 400: returns a bad request if user_id given as wrong data type", () => {
+      return request(app)
+        .get("/api/users/two/events")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("GET 403: returns an unauthorised message if a user tries to access a different users events", () => {
+      return request(app)
+        .get("/api/users/2/events")
+        .set({ authorization: `Bearer ${userUser2.token}` })
         .expect(403)
         .then(({ body }) => {
           expect(body.message).toBe("unauthorised");

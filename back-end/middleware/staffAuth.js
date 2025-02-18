@@ -9,6 +9,7 @@ function authoriseStaff(request, response, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (decoded.role === "staff" || decoded.role === "admin") {
+      request.user = decoded.user_id;
       next();
     } else {
       response.status(403).send({ message: "unauthorised" });

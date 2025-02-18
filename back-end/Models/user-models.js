@@ -65,4 +65,33 @@ function updateUserRole(user_id, updatedRole) {
   });
 }
 
-module.exports = { postNewUser, signInUser, fetchAllUsers, updateUserRole };
+function fetchEventsForUser(user_id, logged_in_user_id) {
+  const getAllEventsUserQueryString = `SELECT users.user_id, users.email, users.name, events.* FROM users
+  LEFT JOIN attendees ON attendees.user_id=users.user_id
+  LEFT JOIN events ON events.event_id=attendees.event_id
+  WHERE users.user_id = $1
+  GROUP BY users.user_id, attendees.attendee_id, events.event_id
+  `;
+
+  const checkUserExists = `SELECT * FROM users WHERE user_id = $1`;
+
+  if (isNaN(user_id)) {
+    return Promise.reject({ status: 400, message: "bad request" });
+  }
+
+  if (logged_in_user_id === +user_id) {
+    return Promise.all([db.query(checkUserExists, [user_id]), db.query(getAllEventsUserQueryString, [user_id])]).then(
+      ([doesUserExist, usersEvents]) => {
+        if (usersEvents.rows.length === 1 && usersEvents.rows[0].event_id === null) {
+          return [];
+        } else {
+          return usersEvents.rows;
+        }
+      }
+    );
+  } else {
+    return Promise.reject({ status: 403, message: "unauthorised" });
+  }
+}
+
+module.exports = { postNewUser, signInUser, fetchAllUsers, updateUserRole, fetchEventsForUser };

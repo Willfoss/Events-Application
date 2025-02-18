@@ -38,6 +38,12 @@ usersData = {
       password: bcrypt.hashSync("password12345678", 10),
       role: "staff",
     },
+    {
+      email: "usertestemail6@email.com",
+      name: "usertest6",
+      password: bcrypt.hashSync("password123456789", 10),
+      role: "user",
+    },
   ],
 };
 
