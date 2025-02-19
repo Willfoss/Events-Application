@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./register.css";
 import { Link, useNavigate } from "react-router-dom";
-//import { uploadImageToCloudinary } from "../api";
 import Lottie from "lottie-react";
 import buttonLoading from "../../assets/loading-button.json";
 import Header from "../Header/Header.jsx";
