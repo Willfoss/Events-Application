@@ -1,0 +1,49 @@
+#error-section {
+  z-index: 5;
+  align-self: stretch;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  height: 25%;
+
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+  color: white;
+  font-size: 20px;
+}
+
+.error-message-container {
+  width: 100%;
+  background-color: #991b1b;
+  height: 125px;
+  max-width: 500px;
+  border-radius: 1em;
+  margin: 0.5em 0em;
+}
+
+.error-body {
+  align-self: center;
+  padding: 0em 1.5em;
+}
+
+.error-text {
+  color: #fff;
+  margin-top: 1.5em;
+}
+
+.close-error {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.close-error:hover {
+  color: gray;
+  cursor: pointer;
+}

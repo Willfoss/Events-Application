@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import buttonLoading from "../../assets/loading-button.json";
 import Header from "../Header/Header.jsx";
+import { registerNewUser } from "../../api.js";
+import Error from "../Error/Error.jsx";
 
 export default function Register(props) {
   const { setShowToast } = props;
@@ -80,9 +82,22 @@ export default function Register(props) {
       setIsConfirmPasswordError(true);
       return;
     }
-    setIsLoading(true);
 
-    //register user http request
+    if (isNameError || isEmailError || isPasswordError || isConfirmPasswordError) {
+      return;
+    }
+    setIsError(false);
+    setIsLoading(true);
+    registerNewUser(name, email, password)
+      .then((data) => {
+        setIsLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setErrorMessage(error.response.data.message);
+        setIsError(true);
+      });
   }
 
   return (
@@ -92,7 +107,7 @@ export default function Register(props) {
         <div className="register-container">
           <form onSubmit={handleregisterSubmit} className="register-form">
             <h2 className="register-header">Register for Free</h2>
-            {isError && <ErrorModal setIsError={setIsError} errorMessage={errorMessage} />}
+            {isError && <Error setIsError={setIsError} errorMessage={errorMessage} />}
             <label className="register-text" htmlFor="name">
               Name
               <input className="register-text text-input" name="name" type="text" value={name} onChange={handleNameChange}></input>
