@@ -9,12 +9,11 @@ import { registerNewUser } from "../../api.js";
 import Error from "../Error/Error.jsx";
 
 export default function Register(props) {
-  const { setShowToast } = props;
+  const { showToast, setShowToast } = props;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [file, setFile] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,59 +44,44 @@ export default function Register(props) {
     if (password === event.target.value) setIsConfirmPasswordError(false);
   }
 
-  //   function handleFileChange(event) {
-  //     setIsLoading(true);
-  //     const image = event.target.files[0];
-
-  //     const formData = new FormData();
-  //     formData.append("file", image);
-  //     formData.append("upload_preset", "jiffy-chat");
-  //     formData.append("cloud_name", "dubtm2mub");
-
-  //     uploadImageToCloudinary(formData)
-  //       .then((data) => {
-  //         setFile(data.url.toString());
-  //         setIsLoading(false);
-  //         setIsError(false);
-  //       })
-  //       .catch((error) => {
-  //         setIsLoading(false);
-  //         setIsError(true);
-  //       });
-  //   }
-
   function handleregisterSubmit(event) {
     event.preventDefault();
-    //error handler for part of form not being filled out
-    if (!name) {
+
+    if (!name || name.trim() === "") {
       setIsNameError(true);
     }
     if (!email) {
       setIsEmailError(true);
     }
-    if (!password) {
+    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password) === false) {
       setIsPasswordError(true);
     }
     if (confirmPassword !== password) {
       setIsConfirmPasswordError(true);
-      return;
     }
-
-    if (isNameError || isEmailError || isPasswordError || isConfirmPasswordError) {
+    if (
+      !name ||
+      name.trim() === "" ||
+      !email ||
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password) === false ||
+      confirmPassword !== password
+    ) {
       return;
+    } else {
+      setIsError(false);
+      setIsLoading(true);
+      registerNewUser(name, email, password)
+        .then((data) => {
+          setIsLoading(false);
+          navigate("/");
+          setShowToast(true);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setErrorMessage(error.response.data.message);
+          setIsError(true);
+        });
     }
-    setIsError(false);
-    setIsLoading(true);
-    registerNewUser(name, email, password)
-      .then((data) => {
-        setIsLoading(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setErrorMessage(error.response.data.message);
-        setIsError(true);
-      });
   }
 
   return (
@@ -121,7 +105,9 @@ export default function Register(props) {
             <label className="register-text" htmlFor="password">
               Password
               <input className="register-text text-input" name="password" type="password" value={password} onChange={handlePasswordChange}></input>
-              {isPasswordError && <p className="register-error-text ">Enter a Password</p>}
+              {isPasswordError && (
+                <p className="register-error-text ">Password must contain at least one uppercase letter, one lowercase letter and one number</p>
+              )}
             </label>
             <label className="register-text" htmlFor="confirm-password">
               Confirm Password
@@ -134,10 +120,7 @@ export default function Register(props) {
               ></input>
               {isConfirmPasswordError && <p className="register-error-text ">Passwords must match</p>}
             </label>
-            <label className="register-text" htmlFor="profile-picture">
-              {/* Upload your file
-              <input className="image-uploader" type="file" name="profile-picture" accept="image/*" onChange={handleFileChange}></input> */}
-            </label>
+            <label className="register-text" htmlFor="profile-picture"></label>
             {isLoading === true ? (
               <div className="register-button-loading">
                 <Lottie className="button-loading-animation " animationData={buttonLoading} loop={true} />

@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import buttonLoading from "../../assets/loading-button.json";
 import Lottie from "lottie-react";
 import Header from "../Header/Header.jsx";
+import Toast from "../Toast/Toast.jsx";
+import Error from "../Error/Error.jsx";
 
 export default function Login(props) {
+  const { showToast, setShowToast } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailError, setIsEmailError] = useState(false);
@@ -45,6 +48,8 @@ export default function Login(props) {
         <div className="login-container">
           <form onSubmit={handleLoginFormSubmit} className="login-form">
             <h2 className="login-header">Log in</h2>
+            {showToast && <Toast setShowToast={setShowToast} successStatic="yes" successMessage="You Successfully signed up! Please log in below" />}
+            {isError && <Error setIsError={setIsError} errorMessage={errorMessage} />}
             <label htmlFor="email">
               <input
                 className="login-text text-input"
