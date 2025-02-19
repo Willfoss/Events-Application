@@ -14,9 +14,11 @@
   --header-height: 75px;
   --brand-hover-colour: #6a1b9a;
   --brand-loading-colour: #9c27b0;
+  --header-height: 60px;
 }
 
 body {
+  width: 100%;
   background-color: var(--primary-background-colour);
 }
 
