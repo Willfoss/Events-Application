@@ -1,6 +1,6 @@
 import React from "react";
 import "./eventsProvider.css";
-import UserHeader from "../../UserHeader/UserHeader";
+import UserHeader from "../UserHeader/UserHeader";
 
 export default function EventsProvider() {
   return (
