@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Calendar1, Search } from "lucide-react";
 import "./userHeader.css";
-import { UserContext } from "../src/Context/UserContext";
+import { UserContext } from "../Context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function UserHeader() {
