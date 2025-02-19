@@ -9,7 +9,7 @@ function App() {
     <main>
       <Routes>
         <Route path="/" element={<Login showToast={showToast} setShowToast={setShowToast} />}></Route>
-        <Route path="/register" element={<Register showToast={showToast} setShowToast={setShowToast} />}></Route>
+        <Route path="/register" element={<Register setShowToast={setShowToast} />}></Route>
       </Routes>
     </main>
   );

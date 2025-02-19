@@ -9,7 +9,7 @@ import { registerNewUser } from "../../api.js";
 import Error from "../Error/Error.jsx";
 
 export default function Register(props) {
-  const { showToast, setShowToast } = props;
+  const { setShowToast } = props;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
