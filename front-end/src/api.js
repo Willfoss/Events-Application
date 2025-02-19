@@ -15,3 +15,9 @@ export function logInUser(email, password) {
     return data;
   });
 }
+
+export function getAllEvents(authorisation) {
+  return eventsphereApi.get("/events", authorisation).then(({ data }) => {
+    return data;
+  });
+}
