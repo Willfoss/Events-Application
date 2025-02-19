@@ -56,10 +56,10 @@ export default function UserHeader() {
                 </li>
               )}
             </ul>
-            <div className={`content-dimmer ${activeClass && "active"}`}></div>
+            <div className={`content-dimmer ${activeClass && "active"}`} onClick={() => setActiveClass(false)}></div>
           </>
         ) : (
-          <ul className="navigation-link-container">
+          <ul className="navigation-link-container" onClick>
             <Link to="/events" className="link">
               Events
             </Link>
