@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./register.css";
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
@@ -6,6 +6,7 @@ import buttonLoading from "../../assets/loading-button.json";
 import Header from "../Header/Header.jsx";
 import { registerNewUser } from "../../api.js";
 import Error from "../Error/Error.jsx";
+import { UserContext } from "../../Context/UserContext.jsx";
 
 export default function Register(props) {
   const { setShowToast } = props;
@@ -21,6 +22,7 @@ export default function Register(props) {
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false);
   const navigate = useNavigate();
+  const { loggedInUser } = useContext(UserContext);
 
   function handleNameChange(event) {
     setName(event.target.value);

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import buttonLoading from "../../assets/loading-button.json";
 import Lottie from "lottie-react";
 import Header from "../Header/Header.jsx";
 import Toast from "../Toast/Toast.jsx";
 import Error from "../Error/Error.jsx";
+import { logInUser } from "../../api.js";
+import { UserContext } from "../../Context/UserContext.jsx";
 
 export default function Login(props) {
   const { showToast, setShowToast } = props;
@@ -16,6 +18,8 @@ export default function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { userChanged, setUserChanged, loggedInUser, setLoggedInUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   function handleEmailChange(event) {
     setEmail(event.target.value.toLowerCase());
@@ -34,11 +38,25 @@ export default function Login(props) {
     }
     if (!password) {
       setIsPasswordError(true);
+    }
+    if (!email || !password) {
       return;
     }
     setIsLoading(true);
     setIsError(false);
-    //http request here
+    logInUser(email, password)
+      .then(({ user }) => {
+        setIsLoading(false);
+        setLoggedInUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+        setUserChanged(!userChanged);
+        navigate("/events");
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsError(true);
+        setErrorMessage(error.response.data.message);
+      });
   }
 
   return (
