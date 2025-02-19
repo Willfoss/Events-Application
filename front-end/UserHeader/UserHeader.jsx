@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Calendar1, Search } from "lucide-react";
 import "./userHeader.css";
 import { UserContext } from "../src/Context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function UserHeader() {
   const [activeClass, setActiveClass] = useState(false);
   const { loggedInUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [windowPixels, setWindowPixels] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -25,7 +26,7 @@ export default function UserHeader() {
 
   return (
     <section id="header">
-      <div className="brand">
+      <div className="brand" onClick={() => navigate("/events")}>
         <Calendar1 className="logo"></Calendar1>
         <h1 className="logo-heading">EventSphere</h1>
       </div>
@@ -38,6 +39,11 @@ export default function UserHeader() {
               <span className="bar"></span>
             </div>
             <ul className={`hamburger-navigation-menu ${activeClass && "active"}`}>
+              <li className="navigation-item">
+                <Link to="/events" className="link">
+                  Events
+                </Link>
+              </li>
               <li className="navigation-item">
                 <Link className="link">My Events</Link>
               </li>
@@ -54,6 +60,9 @@ export default function UserHeader() {
           </>
         ) : (
           <ul className="navigation-link-container">
+            <Link to="/events" className="link">
+              Events
+            </Link>
             <Link className="link">My Events</Link>
             <Link className="link">My Profile</Link>
             {loggedInUser.role === "admin" && <Link className="link">Admin Dashboard</Link>}
