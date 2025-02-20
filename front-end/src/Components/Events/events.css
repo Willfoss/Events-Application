@@ -5,6 +5,7 @@
   flex-direction: column;
   height: calc(100% - var(--header-height));
   width: 100%;
+  margin-top: var(--header-height);
 }
 .events-container {
   display: flex;

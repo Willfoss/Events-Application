@@ -43,6 +43,9 @@
   align-items: center;
   padding: 0em 1em;
   height: 60px;
+  position: sticky;
+  top: 0;
+  background-color: white;
 }
 
 .navigation-item,

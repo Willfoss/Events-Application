@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./eventCard.css";
-import convertToStringMonth from "../utils/utils";
+import { convertToStringMonth } from "../utils/utils";
 import { Link } from "react-router-dom";
 
 export default function EventCard(props) {
@@ -44,10 +44,18 @@ export default function EventCard(props) {
             <p className="event-text bold">{event.start_date.slice(0, 2)}</p>
             <p className="event-text bold">{event.start_date.slice(6, 11)}</p>
           </div>
-          {windowPixels.width > 768 && <Link className="single-event-button">More details</Link>}
+          {windowPixels.width > 768 && (
+            <Link to={`/events/${event.event_id}`} className="single-event-button">
+              More details
+            </Link>
+          )}
         </div>
       </div>
-      {windowPixels.width <= 768 && <Link className="single-event-button">More details</Link>}
+      {windowPixels.width <= 768 && (
+        <Link to={`/events/${event.event_id}`} className="single-event-button">
+          More details
+        </Link>
+      )}
     </section>
   );
 }

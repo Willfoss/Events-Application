@@ -21,3 +21,9 @@ export function getAllEvents(authorisation) {
     return data;
   });
 }
+
+export function getSingleEvent(event_id, authorisation) {
+  return eventsphereApi.get(`/events/${event_id}`, authorisation).then(({ data }) => {
+    return data;
+  });
+}
