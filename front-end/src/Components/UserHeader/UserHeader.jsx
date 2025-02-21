@@ -66,7 +66,9 @@ export default function UserHeader() {
             <Link to="/my-events" className="link">
               My Events
             </Link>
-            <Link className="link">My Profile</Link>
+            <Link to="/my-profile" className="link">
+              My Profile
+            </Link>
             {loggedInUser.role === "admin" && <Link className="link">Admin Dashboard</Link>}
           </ul>
         )}
