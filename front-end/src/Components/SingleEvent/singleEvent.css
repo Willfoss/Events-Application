@@ -59,6 +59,67 @@
   }
 }
 
+.registered-for-event {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  height: 2em;
+  width: auto;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  align-self: stretch;
+  background-color: var(--brand-colour);
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5em;
+}
+
+.cancel-reg-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cancel-registration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  height: 2em;
+  width: auto;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  align-self: stretch;
+  background-color: var(--error-colour);
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5em;
+  &:hover {
+    cursor: pointer;
+    background-color: #c52424;
+  }
+}
+
+.registration-button-loading {
+  margin-top: 1em;
+  height: 2em;
+  width: 100%;
+  background-color: var(--brand-loading-colour);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-loading-animation {
+  height: 2em;
+  width: 2em;
+}
+
 @media screen and (min-width: 769px) {
   .single-event-image {
     max-height: 400px;
@@ -67,8 +128,13 @@
     gap: 1em;
     padding: 1em;
   }
-  .register-for-event-button {
+  .register-for-event-button,
+  .button-loading-animation,
+  .registration-button-loading {
     height: 2.5em;
+  }
+  .cancel-reg-container {
+    flex-direction: row;
   }
 }
 
