@@ -63,10 +63,10 @@ export default function SingleEvent() {
       .catch((error) => {
         setIsLoading(false);
         setIsError(true);
-        showErrorToast(true);
+        setShowErrorToast(true);
         setErrorMessage(error.response.data.message);
       });
-  }, [event_id]);
+  }, [event_id, isStaffEditing]);
 
   function signupForEvent() {
     setIsRegistrationLoading(true);
@@ -116,7 +116,14 @@ export default function SingleEvent() {
       ) : isError ? (
         <Error setIsError={setIsError} errorMessage={errorMessage} />
       ) : isStaffEditing ? (
-        <EditEvent event={event} />
+        <EditEvent
+          event={event}
+          setShowSuccessToast={setShowSuccessToast}
+          setShowErrorToast={setShowErrorToast}
+          setToastSuccessMessage={setToastSuccessMessage}
+          setErrorMessage={setErrorMessage}
+          setIsStaffEditing={setIsStaffEditing}
+        />
       ) : (
         <>
           {showSuccessToast && <Toast setShowToast={setShowSuccessToast} success="yes" successMessage={toastSuccessMessage} />}

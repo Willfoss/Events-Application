@@ -49,3 +49,26 @@ export function getAllEventsForUser(user_id, authorisation) {
     return data.events;
   });
 }
+
+export function patchEventDetails(
+  event_id,
+  event_title,
+  event_description,
+  host,
+  image,
+  location,
+  start_date,
+  end_date,
+  start_time,
+  end_time,
+  link,
+  authorisation
+) {
+  start_date = start_date.split("-").reverse().join("/");
+  end_date = end_date.split("-").reverse().join("/");
+  return eventsphereApi.patch(
+    `/events/${event_id}`,
+    { event_title, event_description, host, image, location, start_date, end_date, start_time, end_time, link },
+    authorisation
+  );
+}

@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./editEvent.css";
 import TextareaAutosize from "react-textarea-autosize";
+import buttonLoading from "../../assets/loading-button.json";
+import Lottie from "lottie-react";
+import setAuthorisationHeader from "../../Auth/auth-config";
+import { UserContext } from "../../Context/UserContext";
+import { patchEventDetails } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 export default function EditEvent(props) {
-  const { event } = props;
+  const { event, setShowSuccessToast, setShowErrorToast, setToastSuccessMessage, setErrorMessage, setIsStaffEditing } = props;
   const [eventTitle, setEventTitle] = useState(event.event_title);
   const [eventDescription, setEventDescription] = useState(event.event_description);
   const [host, setHost] = useState(event.host);
@@ -14,9 +20,41 @@ export default function EditEvent(props) {
   const [startTime, setStartTime] = useState(event.start_time);
   const [endTime, setEndTime] = useState(event.end_time);
   const [link, setLink] = useState(event.link);
+  const [isLoading, setIsLoading] = useState(false);
+  const { loggedInUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  function handleUpdateEvent(event) {
-    event.preventDefault();
+  function handleUpdateEvent(e) {
+    e.preventDefault();
+    setShowSuccessToast(true);
+    setIsLoading(true);
+    setShowErrorToast(false);
+    const authorisation = setAuthorisationHeader(loggedInUser);
+    patchEventDetails(
+      event.event_id,
+      eventTitle,
+      eventDescription,
+      host,
+      image,
+      location,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      link,
+      authorisation
+    )
+      .then((editedEvent) => {
+        setIsLoading(false);
+        setShowSuccessToast(true);
+        setToastSuccessMessage(`${eventTitle} has been successfully updated`);
+        setIsStaffEditing(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setShowErrorToast(true);
+        setErrorMessage(error.response.data.message);
+      });
   }
 
   function handleCancelEditingClick() {
@@ -152,7 +190,13 @@ export default function EditEvent(props) {
               onChange={(e) => setLink(e.target.value)}
             ></input>
           </div>
-          <button className="update-event-button">Update Event</button>
+          {isLoading ? (
+            <div className="registration-button-loading">
+              <Lottie className="button-loading-animation " animationData={buttonLoading} loop={true} />
+            </div>
+          ) : (
+            <button className="update-event-button">Update Event</button>
+          )}
         </form>
       </section>
     </div>
