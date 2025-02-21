@@ -31,7 +31,7 @@ export default function UserHeader() {
         <h1 className="logo-heading">EventSphere</h1>
       </div>
       <nav>
-        {windowPixels.width <= 768 ? (
+        {windowPixels.width <= 880 ? (
           <>
             <div className={`hamburger ${activeClass && "active"}`} onClick={() => setActiveClass(!activeClass)}>
               <span className="bar"></span>
@@ -45,11 +45,16 @@ export default function UserHeader() {
                 </Link>
               </li>
               <li className="navigation-item">
-                <Link className="link">My Events</Link>
+                <Link to="/my-events" className="link">
+                  My Events
+                </Link>
               </li>
               <li className="navigation-item">
-                <Link className="link">My Profile</Link>
+                <Link to="/my-profile" className="link">
+                  My Profile
+                </Link>
               </li>
+              {(loggedInUser.role === "admin" || loggedInUser.role === "staff") && <Link className="link">Create Event</Link>}
               {loggedInUser.role === "admin" && (
                 <li className="navigation-item">
                   <Link className="link">Admin Dashboard</Link>
@@ -69,6 +74,7 @@ export default function UserHeader() {
             <Link to="/my-profile" className="link">
               My Profile
             </Link>
+            {(loggedInUser.role === "admin" || loggedInUser.role === "staff") && <Link className="link">Create Event</Link>}
             {loggedInUser.role === "admin" && <Link className="link">Admin Dashboard</Link>}
           </ul>
         )}
