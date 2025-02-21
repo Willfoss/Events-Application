@@ -2,7 +2,7 @@ const db = require("../db/connection");
 const { fetchEventByEventId } = require("./event-models");
 
 function fetchAttendeesByEventId(event_id) {
-  const queryString = `SELECT events.event_id,  attendees.attendee_id, users.name, users.email FROM events
+  const queryString = `SELECT events.event_id,  attendees.attendee_id, users.user_id, users.name, users.email FROM events
     LEFT JOIN attendees ON attendees.event_id=events.event_id
     LEFT JOIN users ON users.user_id=attendees.user_id
     WHERE events.event_id = $1
@@ -58,7 +58,6 @@ function removeEventAttendee(logged_in_user_id, event_id, user_id) {
       return rows[0];
     })
     .then((attendee) => {
-      console.log(attendee);
       if (logged_in_user_id !== attendee.user_id) {
         return Promise.reject({ status: 403, message: "unauthorised" });
       } else {

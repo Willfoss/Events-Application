@@ -23,9 +23,9 @@ function postNewAttendee(request, response, next) {
 }
 
 function deleteEventAttendee(request, response, next) {
-  const { logged_in_user_id } = request.body;
+  const { user } = request;
   const { event_id, user_id } = request.params;
-  removeEventAttendee(logged_in_user_id, event_id, user_id)
+  removeEventAttendee(user, event_id, user_id)
     .then((attendee) => {
       response.sendStatus(204);
     })

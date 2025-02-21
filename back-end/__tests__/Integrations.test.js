@@ -1134,6 +1134,7 @@ describe("ATTENDEES testing", () => {
               event_id: expect.any(Number),
               email: expect.any(String),
               name: expect.any(String),
+              user_id: expect.any(Number),
             });
           });
         });
@@ -1151,6 +1152,7 @@ describe("ATTENDEES testing", () => {
               event_id: expect.any(Number),
               email: expect.any(String),
               name: expect.any(String),
+              user_id: expect.any(Number),
             });
           });
         });
@@ -1161,7 +1163,6 @@ describe("ATTENDEES testing", () => {
         .set({ authorization: `Bearer ${staffUser.token}` })
         .expect(200)
         .then(({ body }) => {
-          console.log(body);
           expect(body.attendees).toEqual([]);
         });
     });
@@ -1304,24 +1305,18 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .delete("/api/attendees/5/2")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ logged_in_user_id: userUser.user_id })
         .expect(204);
     });
-    test("DELETE 400: returns a bad request if user_id is not send with request", () => {
+    test("DELETE 204: removes the attendee from the event", () => {
       return request(app)
-        .delete("/api/attendees/5/2")
-        .set({ authorization: `Bearer ${userUser.token}` })
-        .send({})
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.message).toBe("bad request");
-        });
+        .delete("/api/attendees/5/1")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .expect(204);
     });
     test("DELETE 400: returns a bad request data is sent as wrong data type", () => {
       return request(app)
         .delete("/api/attendees/five/2")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ logged_in_user_id: userUser.user_id })
         .expect(400)
         .then(({ body }) => {
           expect(body.message).toBe("bad request");
@@ -1330,7 +1325,6 @@ describe("ATTENDEES testing", () => {
     test("DELETE 401: returns a user not authenticated if a non registered user attemps the request", () => {
       return request(app)
         .delete("/api/attendees/5/2")
-        .send({ logged_in_user_id: userUser.user_id })
         .expect(401)
         .then(({ body }) => {
           expect(body.message).toBe("user not authenticated");
@@ -1338,9 +1332,8 @@ describe("ATTENDEES testing", () => {
     });
     test("DELETE 403: returns an unauthorised if the user who is logged in does not match the attendee user_id", () => {
       return request(app)
-        .delete("/api/attendees/5/2")
+        .delete("/api/attendees/5/3")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ logged_in_user_id: 5 })
         .expect(403)
         .then(({ body }) => {
           expect(body.message).toBe("unauthorised");
@@ -1350,7 +1343,6 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .delete("/api/attendees/5/13")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ logged_in_user_id: 5 })
         .expect(404)
         .then(({ body }) => {
           expect(body.message).toBe("attendee not found");
