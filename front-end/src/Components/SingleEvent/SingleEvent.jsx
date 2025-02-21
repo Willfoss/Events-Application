@@ -121,30 +121,30 @@ export default function SingleEvent() {
           <section id="single-event-container">
             <img className="single-event-image" src={event.image}></img>
             <div className="event-content-container">
-              <h2 className="event-title">{event.event_title}</h2>
-              <p className="event-text">{event.event_description}</p>
-              <p className="event-text">
+              <h2 className="single-event-title">{event.event_title}</h2>
+              <p className="single-event-text">{event.event_description}</p>
+              <p className="single-event-text">
                 <span className="bold">Organiser: </span>
                 {event.host}
               </p>
-              <p className="event-text">
+              <p className="single-event-text">
                 <span className="bold">Start Date: </span>
                 {startDay} {startMonth} {startYear}
               </p>
-              <p className="event-text">
+              <p className="single-event-text">
                 <span className="bold">End Date: </span>
                 {endDay} {endMonth} {endYear}
               </p>
-              <p className="event-text">
+              <p className="single-event-text">
                 <span className="bold">Start Time: </span> {event.start_time}
               </p>
-              <p className="event-text">
+              <p className="single-event-text">
                 <span className="bold">End Time: </span> {event.end_time}
               </p>
-              <p className="event-text">
+              <p className="single-event-text">
                 <span className="bold">Number of attendees: </span> {optimisticAttendeeCount}
               </p>
-              <p className="event-text">
+              <p className="single-event-text">
                 <span className="bold">Location: </span>
                 {event.location}
               </p>

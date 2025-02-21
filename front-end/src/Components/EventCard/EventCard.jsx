@@ -40,9 +40,9 @@ export default function EventCard(props) {
         </div>
         <div className="single-article-date-container">
           <div className="event-date-container">
-            <p className="event-text bold">{convertToStringMonth(event.start_date.slice(3, 5))}</p>
-            <p className="event-text bold">{event.start_date.slice(0, 2)}</p>
-            <p className="event-text bold">{event.start_date.slice(6, 11)}</p>
+            <p className="event-text center bold">{convertToStringMonth(event.start_date.slice(3, 5))}</p>
+            <p className="event-text center bold">{event.start_date.slice(0, 2)}</p>
+            <p className="event-text center bold">{event.start_date.slice(6, 11)}</p>
           </div>
           {windowPixels.width > 768 && (
             <Link to={`/events/${event.event_id}`} className="single-event-button">

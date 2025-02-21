@@ -29,12 +29,12 @@
   gap: 0.5em;
 }
 
-.event-title {
+.sinlge-event-title {
   font-size: 1.4em;
   color: var(--primary-text-colour);
 }
 
-.event-text {
+.single-event-text {
   align-self: flex-start;
   color: var(--primary-text-colour);
 }

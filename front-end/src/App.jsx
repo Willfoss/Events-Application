@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "./Context/UserContext";
 import EventsProvider from "./Components/EventsProvider/EventsProvider";
 import SingleEvent from "./Components/SingleEvent/SingleEvent";
+import MyEvents from "./Components/MyEvents/MyEvents";
 
 function App() {
   const [showToast, setShowToast] = useState(false);
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={loggedInUser.email ? <Navigate to="/events" /> : <Register setShowToast={setShowToast} />}></Route>
         <Route path="/events" element={loggedInUser.email ? <EventsProvider /> : <Navigate to="/" />} />
         <Route path="/events/:event_id" element={loggedInUser.email ? <SingleEvent /> : <Navigate to="/" />} />
+        <Route path="/my-events" element={loggedInUser.email ? <MyEvents /> : <Navigate to="/" />} />
       </Routes>
     </main>
   );
