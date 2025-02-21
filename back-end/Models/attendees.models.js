@@ -22,12 +22,25 @@ function registerForEvent(event_id, user_id) {
     VALUES ($1, $2)
     RETURNING *`;
 
-  return db.query(queryString, [event_id, user_id]).then(({ rows }) => {
-    console.log(rows);
-    if (rows.length === 0) {
-      return Promise.reject({ status: 404, message: "event not found" });
+  return Promise.all([fetchAttendeesByEventId(event_id), db.query(queryString, [event_id, user_id])]).then(([eventAttendees, eventRegistration]) => {
+    let isAttendeeAlreadyRegistered = false;
+
+    eventAttendees.forEach((attendee) => {
+      if ((attendee.user_id = user_id)) {
+        isAttendeeAlreadyRegistered = true;
+      }
+    });
+
+    console.log(eventRegistration.rows);
+
+    if (isAttendeeAlreadyRegistered) {
+      return { message: "you're already registered for this event!" };
+    } else {
+      if (eventRegistration.rows.length === 0) {
+        return Promise.reject({ status: 404, message: "event not found" });
+      }
+      return eventRegistration.rows[0];
     }
-    return rows[0];
   });
 }
 

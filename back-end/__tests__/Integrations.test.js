@@ -1206,13 +1206,13 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ event_id: 4, user_id: 1 })
+        .send({ event_id: 1, user_id: 2 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
-            event_id: 4,
-            user_id: 1,
+            event_id: 1,
+            user_id: 2,
           });
         });
     });
@@ -1220,13 +1220,13 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${staffUser.token}` })
-        .send({ event_id: 4, user_id: 2 })
+        .send({ event_id: 1, user_id: 5 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
-            event_id: 4,
-            user_id: 2,
+            event_id: 1,
+            user_id: 5,
           });
         });
     });
@@ -1234,12 +1234,12 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${adminUser.token}` })
-        .send({ event_id: 4, user_id: 1 })
+        .send({ event_id: 1, user_id: 1 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
-            event_id: 4,
+            event_id: 1,
             user_id: 1,
           });
         });
@@ -1248,15 +1248,25 @@ describe("ATTENDEES testing", () => {
       return request(app)
         .post("/api/attendees")
         .set({ authorization: `Bearer ${userUser.token}` })
-        .send({ event_id: 4, user_id: 1, age: 40 })
+        .send({ event_id: 1, user_id: 2, age: 40 })
         .expect(201)
         .then(({ body }) => {
           expect(body.attendee).toMatchObject({
             attendee_id: 13,
-            event_id: 4,
-            user_id: 1,
+            event_id: 1,
+            user_id: 2,
           });
           expect(body.attendee.hasOwnProperty("age")).toBe(false);
+        });
+    });
+    test("POST 201: informs the user they have already registered for event", () => {
+      return request(app)
+        .post("/api/attendees")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .send({ event_id: 5, user_id: 2 })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.attendee.message).toBe("you're already registered for this event!");
         });
     });
     test("POST 400: sends a bad request if event_id is sent as wrong data type", () => {
