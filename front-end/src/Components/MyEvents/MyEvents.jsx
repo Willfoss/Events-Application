@@ -42,7 +42,6 @@ export default function MyEvents() {
         ) : (
           <ul className="events-container">
             {myEvents.map((myEvent) => {
-              console.log(myEvent.event_id);
               return <EventCard key={myEvent.event_id} event={myEvent} />;
             })}
           </ul>
