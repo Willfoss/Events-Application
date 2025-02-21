@@ -32,14 +32,17 @@ export default function Events() {
 
   return (
     <section className="events">
-      {isLoading && <Loading />}
-      {isError && <Error errorMessage={errorMessage} />}
-      <div></div>
-      <ul className="events-container">
-        {events.map((event) => {
-          return <EventCard key={event.event_id} event={event} />;
-        })}
-      </ul>
+      {isLoading ? (
+        <Loading />
+      ) : isError ? (
+        <Error errorMessage={errorMessage} setIsError={setIsError} />
+      ) : (
+        <ul className="events-container">
+          {events.map((event) => {
+            return <EventCard key={event.event_id} event={event} />;
+          })}
+        </ul>
+      )}
     </section>
   );
 }

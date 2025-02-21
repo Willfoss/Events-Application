@@ -43,3 +43,9 @@ export function getAttendeesForEvent(event_id, authorisation) {
     return data.attendees;
   });
 }
+
+export function getAllEventsForUser(user_id, authorisation) {
+  return eventsphereApi.get(`/users/${user_id}/events`, authorisation).then(({ data }) => {
+    return data.events;
+  });
+}
