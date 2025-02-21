@@ -17,7 +17,7 @@ export default function MyEvents() {
 
   useEffect(() => {
     setIsLoading(true);
-    setIsError(true);
+    setIsError(false);
     const authorisation = setAuthorisationHeader(loggedInUser);
     getAllEventsForUser(loggedInUser.user_id, authorisation)
       .then((events) => {
