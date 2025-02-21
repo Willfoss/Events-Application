@@ -54,17 +54,18 @@
 }
 
 .hamburger-navigation-menu {
+  height: 100%;
   display: flex;
   position: fixed;
   left: -100%;
   top: var(--header-height);
   flex-direction: column;
-  background-color: var(--secondary-bg-colour);
+  background-color: #fff;
   width: 80%;
   border-bottom: none;
   text-align: center;
   transition: 0.3s;
-  gap: 0.5em;
+  gap: 1em;
   align-items: flex-start;
   padding-left: 1em;
   padding-top: 0.5em;
