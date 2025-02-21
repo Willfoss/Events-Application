@@ -1,12 +1,19 @@
 .event-card-container {
   display: flex;
   align-items: flex-start;
-  border-top: 3px solid rgb(209 213 219);
+
   width: 100%;
   padding: 0.5em 0em;
 }
 
+.attending-event-confirmation {
+  color: var(--brand-colour);
+  padding-top: 0.5em;
+  font-size: 1em;
+}
+
 #event-card {
+  border-top: 3px solid rgb(209 213 219);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,9 +107,6 @@
 }
 
 @media screen and (min-width: 481px) {
-  .event-card-container {
-    padding: 1em;
-  }
   .event-title-time-container {
     gap: 1em;
   }
@@ -115,6 +119,9 @@
   .event-text {
     font-size: 1em;
   }
+  .attending-event-confirmation {
+    font-size: 1.2em;
+  }
 }
 
 @media screen and (min-width: 769px) {
@@ -125,11 +132,11 @@
     width: 60%;
   }
   .single-article-date-container {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
-    height: 100%;
   }
   .single-event-button {
     width: 300px;
@@ -144,6 +151,22 @@
   }
   .event-card-container {
     padding: 0.5em;
+  }
+  .event-confirmation-container {
+    display: flex;
+    direction: row;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  .flex-space-between {
+    display: flex;
+
+    justify-content: space-between;
+    width: 100%;
+  }
+  .attending-event-confirmation {
+    color: var(--brand-colour);
+    padding-top: 0em;
   }
 }
 
