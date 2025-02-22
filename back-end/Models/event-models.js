@@ -114,7 +114,6 @@ function removeEvent(event_id) {
     if (rowCount === 0) {
       return Promise.reject({ status: 404, message: "event not found" });
     }
-    return;
   });
 }
 

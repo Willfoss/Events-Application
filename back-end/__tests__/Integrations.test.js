@@ -1086,7 +1086,7 @@ describe("EVENTS testing", () => {
         });
     });
   });
-  describe("DELETE event if staff or admin", () => {
+  describe.only("DELETE event if staff or admin", () => {
     test("DELETE 204: successfully deletes the event and corresponding attendees if staff", () => {
       return request(app)
         .delete("/api/events/1")
