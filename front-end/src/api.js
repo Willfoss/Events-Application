@@ -72,3 +72,7 @@ export function patchEventDetails(
     authorisation
   );
 }
+
+export function deleteEvent(event_id, authorisation) {
+  return eventsphereApi(`/events/${event_id}`, authorisation);
+}

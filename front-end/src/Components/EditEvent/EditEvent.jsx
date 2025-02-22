@@ -7,6 +7,7 @@ import setAuthorisationHeader from "../../Auth/auth-config";
 import { UserContext } from "../../Context/UserContext";
 import { patchEventDetails } from "../../api";
 import { useNavigate } from "react-router-dom";
+import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
 
 export default function EditEvent(props) {
   const { event, setShowSuccessToast, setShowErrorToast, setToastSuccessMessage, setErrorMessage, setIsStaffEditing } = props;
@@ -21,6 +22,7 @@ export default function EditEvent(props) {
   const [endTime, setEndTime] = useState(event.end_time);
   const [link, setLink] = useState(event.link);
   const [isLoading, setIsLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteEventModal] = useState(false);
   const { loggedInUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -61,13 +63,24 @@ export default function EditEvent(props) {
     window.location.reload();
   }
 
+  function handleDeleteEventConfirmation() {
+    setShowDeleteEventModal(true);
+  }
+
   return (
     <div className="edit-event">
+      {showDeleteModal && (
+        <ConfirmDelete event_id={event.event_id} event_title={event.event_title} setShowDeleteEventModal={setShowDeleteEventModal} />
+      )}
       <section id="edit-event-container">
-        <button className="cancel-editing-button" onClick={handleCancelEditingClick}>
-          Cancel Editing
-        </button>
-
+        <div className="edit-event-button-container">
+          <button className="delete-event-button" onClick={handleDeleteEventConfirmation}>
+            Delete Event
+          </button>
+          <button className="cancel-editing-button" onClick={handleCancelEditingClick}>
+            Cancel Editing
+          </button>
+        </div>
         <img className="single-event-image" src={image}></img>
         <form className="edit-event-form" onSubmit={handleUpdateEvent}>
           <div className="edit-event-input-container">

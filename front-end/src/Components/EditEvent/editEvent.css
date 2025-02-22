@@ -102,9 +102,38 @@
   text-decoration: none;
   border: none;
   height: 2em;
-  width: 30%;
+  width: 40%;
   font-size: 1em;
   background-color: var(--brand-colour);
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5em;
+  &:hover {
+    background-color: var(--brand-hover-colour);
+    cursor: pointer;
+  }
+}
+
+.edit-event-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-event-button {
+  margin-right: 0.5em;
+  align-self: flex-end;
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  height: 2em;
+  width: 40%;
+  font-size: 1em;
+  background-color: var(--error-colour);
   font-weight: bold;
   color: white;
   margin-bottom: 0.5em;
@@ -131,6 +160,15 @@ textarea {
   align-self: flex-start;
 }
 
+@media screen and (min-width: 481px) {
+  .cancel-editing-button {
+    width: 30%;
+  }
+  .delete-event-button {
+    width: 30%;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .edit-event-form {
     padding: 1em;
@@ -149,5 +187,10 @@ textarea {
   }
   .cancel-editing-button {
     margin-right: 1em;
+    height: 2.5em;
+  }
+  .delete-event-button {
+    margin-left: 1em;
+    height: 2.5em;
   }
 }

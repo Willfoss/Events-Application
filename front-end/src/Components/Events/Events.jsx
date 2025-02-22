@@ -6,8 +6,10 @@ import Loading from "../Loading/Loading";
 import "./events.css";
 import Error from "../Error/Error";
 import EventCard from "../EventCard/EventCard";
+import Toast from "../Toast/Toast";
 
-export default function Events() {
+export default function Events(props) {
+  const { showSuccessToast, setShowSuccessToast, successToastMessage } = props;
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -37,11 +39,14 @@ export default function Events() {
       ) : isError ? (
         <Error errorMessage={errorMessage} setIsError={setIsError} />
       ) : (
-        <ul className="events-container">
-          {events.map((event) => {
-            return <EventCard key={event.event_id} event={event} />;
-          })}
-        </ul>
+        <>
+          {showSuccessToast && <Toast success="yes" setShowToast={setShowSuccessToast} successMessage={successToastMessage} />}
+          <ul className="events-container">
+            {events.map((event) => {
+              return <EventCard key={event.event_id} event={event} />;
+            })}
+          </ul>
+        </>
       )}
     </section>
   );
