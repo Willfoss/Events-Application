@@ -1,4 +1,4 @@
-const { fetchAllEvents, fetchEventByEventId, createNewEvent, updateExistingEvent } = require("../Models/event-models");
+const { fetchAllEvents, fetchEventByEventId, createNewEvent, updateExistingEvent, removeEvent } = require("../Models/event-models");
 
 function getAllEvents(request, response, next) {
   fetchAllEvents()
@@ -44,4 +44,16 @@ function patchExistingEvent(request, response, next) {
     });
 }
 
-module.exports = { getAllEvents, getEventByEventId, postNewEvent, patchExistingEvent };
+function deleteEvent(request, response, next) {
+  const { event_id } = request.params;
+  console.log(event_id);
+  removeEvent(event_id)
+    .then(() => {
+      response.sendStatus(204);
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = { getAllEvents, getEventByEventId, postNewEvent, patchExistingEvent, deleteEvent };

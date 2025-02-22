@@ -1086,6 +1086,55 @@ describe("EVENTS testing", () => {
         });
     });
   });
+  describe("DELETE event if staff or admin", () => {
+    test("DELETE 204: successfully deletes the event and corresponding attendees if staff", () => {
+      return request(app)
+        .delete("/api/events/1")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(204);
+    });
+    test("DELETE 204: successfully deletes the event and corresponding attendees if admin", () => {
+      return request(app)
+        .delete("/api/events/1")
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .expect(204);
+    });
+    test("DELETE 400: returns bad request if event_id provided as wrong data type", () => {
+      return request(app)
+        .delete("/api/events/one")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
+        });
+    });
+    test("DELETE 401: return user not authenticated if somebody with no auth tries  to access the api", () => {
+      return request(app)
+        .delete("/api/events/1")
+        .expect(401)
+        .then(({ body }) => {
+          expect(body.message).toBe("user not authenticated");
+        });
+    });
+    test("DELETE 403: cannot delete event if a user", () => {
+      return request(app)
+        .delete("/api/events/1")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.message).toBe("unauthorised");
+        });
+    });
+    test("DELETE 404: return event not found if no event exists with that id yet", () => {
+      return request(app)
+        .delete("/api/events/13")
+        .set({ authorization: `Bearer ${staffUser.token}` })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("event not found");
+        });
+    });
+  });
 });
 
 describe("ATTENDEES testing", () => {

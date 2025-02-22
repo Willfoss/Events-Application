@@ -108,4 +108,14 @@ function updateExistingEvent(event_id, event_title, event_description, host, ima
   });
 }
 
-module.exports = { fetchAllEvents, fetchEventByEventId, createNewEvent, updateExistingEvent };
+function removeEvent(event_id) {
+  const queryString = `DELETE FROM events WHERE event_id = $1`;
+  return db.query(queryString, [event_id]).then(({ rowCount }) => {
+    if (rowCount === 0) {
+      return Promise.reject({ status: 404, message: "event not found" });
+    }
+    return;
+  });
+}
+
+module.exports = { fetchAllEvents, fetchEventByEventId, createNewEvent, updateExistingEvent, removeEvent };
