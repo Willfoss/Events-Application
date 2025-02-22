@@ -54,7 +54,11 @@ export default function UserHeader() {
                   My Profile
                 </Link>
               </li>
-              {(loggedInUser.role === "admin" || loggedInUser.role === "staff") && <Link className="link">Create Event</Link>}
+              {(loggedInUser.role === "admin" || loggedInUser.role === "staff") && (
+                <Link to="/create-event" className="link">
+                  Create Event
+                </Link>
+              )}
               {loggedInUser.role === "admin" && (
                 <li className="navigation-item">
                   <Link className="link">Admin Dashboard</Link>
@@ -74,7 +78,11 @@ export default function UserHeader() {
             <Link to="/my-profile" className="link">
               My Profile
             </Link>
-            {(loggedInUser.role === "admin" || loggedInUser.role === "staff") && <Link className="link">Create Event</Link>}
+            {(loggedInUser.role === "admin" || loggedInUser.role === "staff") && (
+              <Link to="/create-event" className="link">
+                Create Event
+              </Link>
+            )}
             {loggedInUser.role === "admin" && <Link className="link">Admin Dashboard</Link>}
           </ul>
         )}
