@@ -76,3 +76,25 @@ export function patchEventDetails(
 export function deleteEvent(event_id, authorisation) {
   return eventsphereApi.delete(`/events/${event_id}`, authorisation);
 }
+
+export function createNewEvent(
+  event_title,
+  event_description,
+  host,
+  image,
+  location,
+  start_date,
+  end_date,
+  start_time,
+  end_time,
+  link,
+  authorisation
+) {
+  start_date = start_date.split("-").reverse().join("/");
+  end_date = end_date.split("-").reverse().join("/");
+  return eventsphereApi
+    .post(`/events`, { event_title, event_description, host, image, location, start_date, end_date, start_time, end_time, link }, authorisation)
+    .then(({ data }) => {
+      return data.event;
+    });
+}

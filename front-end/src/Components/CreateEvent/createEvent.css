@@ -79,10 +79,20 @@
   padding: 0.5em 0.5em;
   border: solid 2px var(--primary-text-colour);
   border-radius: 0.3em;
-  height: 3em;
+  height: 6em;
   max-width: 100%;
   font-size: 1em;
   color: black;
+}
+
+.post-event-input-container {
+  width: 100%;
+}
+
+.form-field-missing-text {
+  color: red;
+  font-weight: bold;
+  font-size: 0.9em;
 }
 
 .update-event-button {
