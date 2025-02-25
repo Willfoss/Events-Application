@@ -84,7 +84,6 @@ export default function CreateAdmin(props) {
           setSuccessMessage(`New ${role} account created`);
         })
         .catch((error) => {
-          console.log(error);
           setIsLoading(false);
           setShowErrorToast(true);
           setErrorMessage(error.response.data.message);

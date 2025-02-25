@@ -9,7 +9,7 @@ export default function AdminDashboard() {
   const [showUpdateUser, setShowUpdateUser] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleUpdateUserClick() {
