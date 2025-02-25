@@ -64,6 +64,7 @@ input,
   color: white;
   &:hover {
     background-color: var(--brand-hover-colour);
+    cursor: pointer;
   }
 }
 

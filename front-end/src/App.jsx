@@ -16,17 +16,14 @@ function App() {
   return (
     <main>
       <Routes>
-        <Route
-          path="/"
-          element={loggedInUser.email ? <Navigate to="/events" /> : <Login showToast={showToast} setShowToast={setShowToast} />}
-        ></Route>
-        <Route path="/register" element={loggedInUser.email ? <Navigate to="/events" /> : <Register setShowToast={setShowToast} />}></Route>
-        <Route path="/events" element={loggedInUser.email ? <EventsProvider /> : <Navigate to="/" />} />
-        <Route path="/events/:event_id" element={loggedInUser.email ? <SingleEvent /> : <Navigate to="/" />} />
-        <Route path="/my-events" element={loggedInUser.email ? <MyEvents /> : <Navigate to="/" />} />
-        <Route path="/my-profile" element={loggedInUser.email ? <Profile /> : <Navigate to="/" />} />
-        <Route path="/create-event" element={loggedInUser.email ? <CreateEvent /> : <Navigate to="/" />} />
-        <Route path="/admin-dashboard" element={loggedInUser.email ? <AdminDashboard /> : <Navigate to="/" />} />
+        <Route path="/" element={loggedInUser ? <Navigate to="/events" /> : <Login showToast={showToast} setShowToast={setShowToast} />}></Route>
+        <Route path="/register" element={loggedInUser ? <Navigate to="/events" /> : <Register setShowToast={setShowToast} />}></Route>
+        <Route path="/events" element={loggedInUser ? <EventsProvider /> : <Navigate to="/" />} />
+        <Route path="/events/:event_id" element={loggedInUser ? <SingleEvent /> : <Navigate to="/" />} />
+        <Route path="/my-events" element={loggedInUser ? <MyEvents /> : <Navigate to="/" />} />
+        <Route path="/my-profile" element={loggedInUser ? <Profile /> : <Navigate to="/" />} />
+        <Route path="/create-event" element={loggedInUser ? <CreateEvent /> : <Navigate to="/" />} />
+        <Route path="/admin-dashboard" element={loggedInUser ? <AdminDashboard /> : <Navigate to="/" />} />
       </Routes>
     </main>
   );

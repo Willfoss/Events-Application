@@ -4,7 +4,12 @@ import { UserContext } from "../../Context/UserContext";
 import "./profile.css";
 
 export default function Profile() {
-  const { loggedInUser } = useContext(UserContext);
+  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+
+  function handleSignOutClick() {
+    setLoggedInUser(null);
+  }
+
   return (
     <section id="profile">
       <UserHeader />
@@ -18,6 +23,9 @@ export default function Profile() {
           <span className="bold">Email: </span>
           {loggedInUser.email}
         </p>
+        <button className="log-out-button" onClick={handleSignOutClick}>
+          Sign Out
+        </button>
       </div>
     </section>
   );
