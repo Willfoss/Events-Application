@@ -31,7 +31,7 @@ export default function CreateEvent() {
   const [isEndTimeError, setIsEndTimeError] = useState(false);
   const [link, setLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showErrorToast, setShowErrorToast] = useState(true);
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [createdEvent, setCreatedEvent] = useState({});
   const { loggedInUser } = useContext(UserContext);

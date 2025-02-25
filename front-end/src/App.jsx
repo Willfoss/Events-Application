@@ -8,6 +8,7 @@ import SingleEvent from "./Components/SingleEvent/SingleEvent";
 import MyEvents from "./Components/MyEvents/MyEvents";
 import Profile from "./Components/Profile/Profile";
 import CreateEvent from "./Components/CreateEvent/CreateEvent";
+import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 
 function App() {
   const [showToast, setShowToast] = useState(false);
@@ -25,6 +26,7 @@ function App() {
         <Route path="/my-events" element={loggedInUser.email ? <MyEvents /> : <Navigate to="/" />} />
         <Route path="/my-profile" element={loggedInUser.email ? <Profile /> : <Navigate to="/" />} />
         <Route path="/create-event" element={loggedInUser.email ? <CreateEvent /> : <Navigate to="/" />} />
+        <Route path="/admin-dashboard" element={loggedInUser.email ? <AdminDashboard /> : <Navigate to="/" />} />
       </Routes>
     </main>
   );
