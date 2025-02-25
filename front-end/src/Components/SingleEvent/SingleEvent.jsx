@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./singleEvent.css";
 import UserHeader from "../UserHeader/UserHeader";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { deleteEventAttendee, getAttendeesForEvent, getSingleEvent, registerForEvent } from "../../api";
 import setAuthorisationHeader from "../../Auth/auth-config";
@@ -33,7 +33,20 @@ export default function SingleEvent() {
   const [endMonth, setEndMonth] = useState("");
   const [endYear, setEndYear] = useState("");
   const [isStaffEditing, setIsStaffEditing] = useState(false);
+
   let [optimisticAttendeeCount, setOptimisticAttendeeCount] = useState(0);
+  let location = useLocation();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state && location.state.showSuccessToast === true) {
+      setShowSuccessToast(true);
+      setToastSuccessMessage(location.state.successToastText);
+      navigate(location.pathname, { replace: true });
+    } else {
+      setShowSuccessToast(false);
+    }
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);

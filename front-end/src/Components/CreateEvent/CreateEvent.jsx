@@ -7,6 +7,7 @@ import buttonLoading from "../../assets/loading-button.json";
 import Lottie from "lottie-react";
 import TextareaAutosize from "react-textarea-autosize";
 import UserHeader from "../UserHeader/UserHeader";
+import { createNewEvent } from "../../api";
 
 export default function CreateEvent() {
   const [eventTitle, setEventTitle] = useState("");
@@ -30,6 +31,8 @@ export default function CreateEvent() {
   const [link, setLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [createdEvent, setCreatedEvent] = useState({});
   const { loggedInUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -51,6 +54,19 @@ export default function CreateEvent() {
     setIsLoading(true);
     setShowErrorToast(false);
     const authorisation = setAuthorisationHeader(loggedInUser);
+    createNewEvent(eventTitle, eventDescription, host, image, location, startDate, endDate, startTime, endTime, link, authorisation)
+      .then((event) => {
+        setCreatedEvent(event);
+        setIsLoading(false);
+        navigate(`/events/${event.event_id}`, {
+          replace: true,
+          state: { showSuccessToast: true, successToastText: `you have successfully created an event for ${event.event_title}` },
+        });
+      })
+      .catch((error) => {
+        setShowErrorToast(true);
+        setErrorMessage(error.response.data.message);
+      });
   }
 
   return (
