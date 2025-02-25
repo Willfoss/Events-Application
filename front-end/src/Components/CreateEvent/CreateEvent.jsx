@@ -8,6 +8,7 @@ import Lottie from "lottie-react";
 import TextareaAutosize from "react-textarea-autosize";
 import UserHeader from "../UserHeader/UserHeader";
 import { createNewEvent } from "../../api";
+import Toast from "../Toast/Toast";
 
 export default function CreateEvent() {
   const [eventTitle, setEventTitle] = useState("");
@@ -30,7 +31,7 @@ export default function CreateEvent() {
   const [isEndTimeError, setIsEndTimeError] = useState(false);
   const [link, setLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [createdEvent, setCreatedEvent] = useState({});
   const { loggedInUser } = useContext(UserContext);
@@ -73,6 +74,7 @@ export default function CreateEvent() {
     <section id="create-event">
       <UserHeader />
       <div className="create-event">
+        {showErrorToast && <Toast error="yes" errorMessage={errorMessage} setShowToast={setShowErrorToast} />}
         <section id="create-event-container">
           <h2 className="create-new-event-title">Create a new Event</h2>
           <form className="create-event-form" onSubmit={handleCreateNewEvent}>
