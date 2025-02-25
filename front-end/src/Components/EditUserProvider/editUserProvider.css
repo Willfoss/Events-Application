@@ -1,0 +1,12 @@
+#update-user-provider {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  height: calc(100dvh - 110px - var(--header-height));
+}
+
+@media screen and (min-width: 769px) {
+  #update-user-provider {
+    height: calc(100dvh - 72px - var(--header-height));
+  }
+}

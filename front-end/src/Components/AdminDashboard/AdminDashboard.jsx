@@ -3,13 +3,14 @@ import "./adminDashboard.css";
 import UserHeader from "../UserHeader/UserHeader";
 import CreateAdmin from "../CreateAdmin/CreateAdmin";
 import Toast from "../Toast/Toast";
+import EditUserProvider from "../EditUserProvider/EditUserProvider";
 
 export default function AdminDashboard() {
   const [showCreateNewUser, setShowCreateNewUser] = useState(false);
   const [showUpdateUser, setShowUpdateUser] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [showErrorToast, setShowErrorToast] = useState(true);
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleUpdateUserClick() {
@@ -38,6 +39,15 @@ export default function AdminDashboard() {
         </div>
         {showCreateNewUser && (
           <CreateAdmin
+            setShowSuccessToast={setShowSuccessToast}
+            setShowErrorToast={setShowErrorToast}
+            setErrorMessage={setErrorMessage}
+            setSuccessMessage={setSuccessMessage}
+            setShowCreateNewUser={setShowCreateNewUser}
+          />
+        )}
+        {showUpdateUser && (
+          <EditUserProvider
             setShowSuccessToast={setShowSuccessToast}
             setShowErrorToast={setShowErrorToast}
             setErrorMessage={setErrorMessage}

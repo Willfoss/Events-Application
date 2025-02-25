@@ -98,3 +98,9 @@ export function createNewEvent(
       return data.event;
     });
 }
+
+export function getUsers(authorisation) {
+  return eventsphereApi.get("/users", authorisation).then(({ data }) => {
+    return data.users;
+  });
+}

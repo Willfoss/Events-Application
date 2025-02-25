@@ -113,7 +113,6 @@ export default function CreateAdmin(props) {
                 <option value={"staff"}>Staff</option>
                 <option value={"admin"}>Admin</option>
               </select>
-              {isEmailError && <p className="register-error-text ">Enter a role</p>}
             </label>
             <label className="register-text" htmlFor="password">
               Password
