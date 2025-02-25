@@ -1,0 +1,64 @@
+#admin-dashboard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-container {
+  width: 100%;
+  padding: 0.5em;
+}
+
+.admin-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  height: 3em;
+  width: 100%;
+  font-size: 1em;
+  align-self: stretch;
+  background-color: var(--brand-colour);
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5em;
+  &:hover {
+    background-color: var(--brand-hover-colour);
+    cursor: pointer;
+  }
+}
+
+.admin-button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-button-loading {
+  margin-top: 1em;
+  background-color: var(--brand-loading-colour);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-loading-animation {
+  width: 3em;
+  height: 3em;
+}
+
+@media screen and (min-width: 769px) {
+  .admin-container {
+    padding: 1em;
+  }
+  .admin-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10%;
+  }
+  .admin-button {
+    width: 40%;
+  }
+}
