@@ -2,13 +2,19 @@ const db = require("../db/connection");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../config/generate-token");
 
-function postNewUser(email, name, password) {
+function postNewUser(email, name, password, role = "user") {
+  const allowedRoles = ["user", "staff", "admin"];
+
+  if (!allowedRoles.includes(role)) {
+    return Promise.reject({ status: 400, message: "bad request" });
+  }
+
   if (!email || !password || !name) {
     return Promise.reject({ status: 400, message: "bad request: email, name and password are all required" });
   }
 
-  const queryString = `INSERT INTO users (email, name, password) VALUES ($1, $2, $3) RETURNING *;`;
-  return db.query(queryString, [email, name, password]).then(({ rows }) => {
+  const queryString = `INSERT INTO users (email, name, password, role) VALUES ($1, $2, $3, $4) RETURNING *;`;
+  return db.query(queryString, [email, name, password, role]).then(({ rows }) => {
     return rows[0];
   });
 }

@@ -2,9 +2,9 @@ const bcrypt = require("bcrypt");
 const { postNewUser, signInUser, fetchAllUsers, updateUserRole, fetchEventsForUser } = require("../Models/user-models");
 
 function registerUser(request, response, next) {
-  const { email, name, password } = request.body;
+  const { email, name, password, role } = request.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  postNewUser(email, name, hashedPassword)
+  postNewUser(email, name, hashedPassword, role)
     .then((user) => {
       response.status(201).send({ user });
     })

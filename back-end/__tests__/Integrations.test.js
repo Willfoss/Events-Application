@@ -24,6 +24,36 @@ describe("USERS testing", () => {
           });
         });
     });
+    test("POST 201: successfully registers a new staff user", () => {
+      return request(app)
+        .post("/api/users")
+        .send({ email: "testSuite@email.com", name: "testSuiteName", password: "testSuitePassword", role: "staff" })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            user_id: 8,
+            name: "testSuiteName",
+            email: "testSuite@email.com",
+            password: expect.any(String),
+            role: "staff",
+          });
+        });
+    });
+    test("POST 201: successfully registers a new admin user", () => {
+      return request(app)
+        .post("/api/users")
+        .send({ email: "testSuite@email.com", name: "testSuiteName", password: "testSuitePassword", role: "admin" })
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            user_id: 8,
+            name: "testSuiteName",
+            email: "testSuite@email.com",
+            password: expect.any(String),
+            role: "admin",
+          });
+        });
+    });
     test("POST 201: password is stored in hashed form", () => {
       return request(app)
         .post("/api/users")
@@ -57,6 +87,15 @@ describe("USERS testing", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.message).toBe("bad request: email, name and password are all required");
+        });
+    });
+    test("POST 400: returns a bad request message if the role is not user, admin or staff", () => {
+      return request(app)
+        .post("/api/users")
+        .send({ email: "testSuite@email.com", name: "testSuiteName", password: "testSuitePassword", role: "superadmin" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("bad request");
         });
     });
     test("POST 409: informs user that email address is already registered if it already exists in db", () => {
@@ -1086,7 +1125,7 @@ describe("EVENTS testing", () => {
         });
     });
   });
-  describe.only("DELETE event if staff or admin", () => {
+  describe("DELETE event if staff or admin", () => {
     test("DELETE 204: successfully deletes the event and corresponding attendees if staff", () => {
       return request(app)
         .delete("/api/events/1")
