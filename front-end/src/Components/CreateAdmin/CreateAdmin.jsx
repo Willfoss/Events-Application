@@ -92,8 +92,8 @@ export default function CreateAdmin(props) {
   }
 
   return (
-    <section id="admin-register-section">
-      <div className="admin-register-container">
+    <section id="admin-create-section">
+      <div className="admin-create-container">
         <div className="register-container">
           <form onSubmit={handleregisterSubmit} className="register-form">
             <label className="register-text" htmlFor="name">
