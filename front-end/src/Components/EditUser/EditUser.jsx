@@ -1,23 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import("./editUser.css");
 import { ArrowLeft } from "lucide-react";
+import setAuthorisationHeader from "../../Auth/auth-config";
+import { UserContext } from "../../Context/UserContext";
+import { updateUserRole } from "../../api";
+import Lottie from "lottie-react";
+import buttonLoading from "../../assets/loading-button.json";
 
 export default function EditUser(props) {
   const { setShowSuccessToast, setShowErrorToast, setErrorMessage, setSuccessMessage, selectedUserToEdit, setSelectedUserToEdit } = props;
   const [users, setUsers] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState(selectedUserToEdit ? selectedUserToEdit.role : "user");
+  const [role, setRole] = useState(selectedUserToEdit === undefined ? "" : selectedUserToEdit.role);
   const [windowPixels, setWindowPixels] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
+  const { loggedInUser } = useContext(UserContext);
+
   function handleRoleChange(event) {
     setRole(event.target.value);
   }
 
+  function handleBackArrowClick() {
+    setSelectedUserToEdit();
+  }
+
   function handleUpdateUser(event) {
     event.preventDefault();
+    setIsLoading(true);
+    setShowErrorToast(false);
+    const authorisation = setAuthorisationHeader(loggedInUser);
+    updateUserRole(selectedUserToEdit.user_id, role, authorisation)
+      .then((user) => {
+        setSuccessMessage(`user ${selectedUserToEdit.email} role was updated to ${role}`);
+        setShowSuccessToast(true);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data.message);
+        setShowErrorToast(true);
+        setIsLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -30,10 +55,6 @@ export default function EditUser(props) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  function handleBackArrowClick() {
-    setSelectedUserToEdit();
-  }
 
   return (
     <section id="edit-user" className={!selectedUserToEdit && windowPixels.width <= 768 ? "hide-edit-user" : "show-edit-user"}>
@@ -55,7 +76,7 @@ export default function EditUser(props) {
                 </p>
                 <label className="register-text bold" htmlFor="role">
                   Update User Role
-                  <select className="update-user-role-select" name="role" defaultValue="user" onChange={handleRoleChange}>
+                  <select className="update-user-role-select" name="role" defaultValue={selectedUserToEdit.role} onChange={handleRoleChange}>
                     <option value={"user"}>User</option>
                     <option value={"staff"}>Staff</option>
                     <option value={"admin"}>Admin</option>

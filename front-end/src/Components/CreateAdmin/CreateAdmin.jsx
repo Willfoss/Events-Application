@@ -3,9 +3,7 @@ import "./createAdmin.css";
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import buttonLoading from "../../assets/loading-button.json";
-import Header from "../Header/Header.jsx";
 import { registerNewUser } from "../../api.js";
-import Error from "../Error/Error.jsx";
 import { UserContext } from "../../Context/UserContext.jsx";
 
 export default function CreateAdmin(props) {

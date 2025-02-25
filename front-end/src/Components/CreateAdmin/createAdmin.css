@@ -13,6 +13,10 @@
   margin-top: 1em;
 }
 
+.text-input {
+  outline: solid 2px black;
+}
+
 .register-container,
 .register-form {
   display: flex;

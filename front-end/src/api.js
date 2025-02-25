@@ -104,3 +104,9 @@ export function getUsers(authorisation) {
     return data.users;
   });
 }
+
+export function updateUserRole(user_id, role, authorisation) {
+  return eventsphereApi.patch("/users", { user_id, role }, authorisation).then(({ data }) => {
+    return data.user;
+  });
+}
