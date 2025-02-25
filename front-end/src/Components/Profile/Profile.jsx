@@ -5,7 +5,6 @@ import "./profile.css";
 
 export default function Profile() {
   const { loggedInUser } = useContext(UserContext);
-  console.log(loggedInUser);
   return (
     <section id="profile">
       <UserHeader />
