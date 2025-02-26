@@ -12,6 +12,7 @@ import Toast from "../Toast/Toast";
 import Loading from "../Loading/Loading";
 import Error from "../Error/Error";
 import EditEvent from "../EditEvent/EditEvent";
+import AddToCalendar from "../AddToCalendar/AddToCalendar";
 
 export default function SingleEvent() {
   const { event_id } = useParams();
@@ -143,12 +144,15 @@ export default function SingleEvent() {
           {showErrorToast && <Toast error="yes" setShowToast={setShowErrorToast} errorMessage={errorMessage} />}
           <section id="single-event-container">
             <img className="single-event-image" src={event.image}></img>
-            {loggedInUser.role === "staff" ||
-              ("admin" && (
-                <button className="edit-event-button" onClick={() => setIsStaffEditing(true)}>
-                  Edit Event
-                </button>
-              ))}
+            <div className="single-event-button-container">
+              <AddToCalendar />
+              {loggedInUser.role === "staff" ||
+                ("admin" && (
+                  <button className="edit-event-button" onClick={() => setIsStaffEditing(true)}>
+                    Edit Event
+                  </button>
+                ))}
+            </div>
             <div className="event-content-container">
               <h2 className="single-event-title">{event.event_title}</h2>
               <p className="single-event-text">{event.event_description}</p>

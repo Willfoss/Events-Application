@@ -1,0 +1,28 @@
+.add-to-calendar {
+  margin-left: 0.5em;
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  height: 2em;
+  width: 50%;
+  font-size: 1em;
+  background-color: var(--brand-colour);
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5em;
+  &:hover {
+    background-color: var(--brand-hover-colour);
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .add-to-calendar {
+    width: 35%;
+    height: 2.5em;
+    margin-left: 1em;
+  }
+}
