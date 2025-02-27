@@ -39,9 +39,18 @@ function signInUser(email, password) {
   });
 }
 
-function fetchAllUsers() {
-  const queryString = `SELECT * FROM users;`;
-  return db.query(queryString).then(({ rows }) => {
+function fetchAllUsers(search) {
+  let queryString = `SELECT * FROM users`;
+
+  const queryArray = [];
+  if (search) {
+    queryString += ` WHERE email ~ $1`;
+    queryArray.push(search);
+  }
+
+  console.log(queryString);
+  return db.query(queryString, queryArray).then(({ rows }) => {
+    console.log(rows);
     return rows;
   });
 }

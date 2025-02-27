@@ -170,7 +170,7 @@ describe("USERS testing", () => {
         });
     });
   });
-  describe("GET a list of all users (admin only)", () => {
+  describe.only("GET a list of all users (admin only)", () => {
     let adminUser;
     let userUser;
     let staffUser;
@@ -209,6 +209,23 @@ describe("USERS testing", () => {
         .set({ authorization: `Bearer ${adminUser.token}` })
         .then(({ body }) => {
           expect(body.users.length).toBe(7);
+          body.users.forEach((user) => {
+            expect(user).toMatchObject({
+              user_id: expect.any(Number),
+              email: expect.any(String),
+              name: expect.any(String),
+              role: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 200: returns a list of all users whose email matches the search string", () => {
+      return request(app)
+        .get("/api/users?search=test")
+        .expect(200)
+        .set({ authorization: `Bearer ${adminUser.token}` })
+        .then(({ body }) => {
+          expect(body.users.length).toBe(6);
           body.users.forEach((user) => {
             expect(user).toMatchObject({
               user_id: expect.any(Number),

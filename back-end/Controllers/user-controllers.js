@@ -25,7 +25,8 @@ function loginUser(request, response, next) {
 }
 
 function getAllUsers(request, response, next) {
-  fetchAllUsers()
+  const { search } = request.query;
+  fetchAllUsers(search)
     .then((users) => {
       response.send({ users });
     })
