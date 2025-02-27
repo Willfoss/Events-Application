@@ -9,6 +9,7 @@ import SearchUserCard from "../SearchUserCard/SearchUserCard";
 export default function SearchUser(props) {
   const { setShowSuccessToast, setShowErrorToast, setErrorMessage, setSuccessMessage, selectedUserToEdit, setSelectedUserToEdit } = props;
   const [users, setUsers] = useState();
+  const [search, setSearch] = useState("");
   const [loading, setIsLoading] = useState(false);
   const { loggedInUser } = useContext(UserContext);
 
@@ -28,27 +29,40 @@ export default function SearchUser(props) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setShowErrorToast(false);
-    const authorisation = setAuthorisationHeader(loggedInUser);
-    getUsers(authorisation)
-      .then((users) => {
-        setUsers(users);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setShowErrorToast(true);
-        setErrorMessage(error.response.data.message);
-      });
-  }, []);
+  function handleSearchChange(event) {
+    setSearch(event.target.value);
+    if (event.target.value.length > 0) {
+      setIsLoading(true);
+      setShowErrorToast(false);
+      const authorisation = setAuthorisationHeader(loggedInUser);
+      authorisation.params = { search: event.target.value };
+      console.log(authorisation);
+      getUsers(authorisation)
+        .then((users) => {
+          setUsers(users);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setShowErrorToast(true);
+          setErrorMessage(error.response.data.message);
+        });
+    } else {
+      setUsers([]);
+    }
+  }
 
   return (
     <section id="search-for-user" className={selectedUserToEdit && windowPixels.width <= 768 ? "hide-user-search" : "show-user-search"}>
       <div className="search-user-header">
         <label className="search-label" htmlFor="user-search">
-          <input className="user-search-input" name="user-search" placeholder="search for a user"></input>
+          <input
+            className="user-search-input"
+            name="user-search"
+            placeholder="search for a user"
+            value={search}
+            onChange={handleSearchChange}
+          ></input>
           <Search className="search-icon" />
         </label>
       </div>
