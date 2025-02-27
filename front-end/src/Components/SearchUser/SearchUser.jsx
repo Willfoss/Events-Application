@@ -36,7 +36,6 @@ export default function SearchUser(props) {
       setShowErrorToast(false);
       const authorisation = setAuthorisationHeader(loggedInUser);
       authorisation.params = { search: event.target.value };
-      console.log(authorisation);
       getUsers(authorisation)
         .then((users) => {
           setUsers(users);
