@@ -46,7 +46,6 @@ function patchExistingEvent(request, response, next) {
 
 function deleteEvent(request, response, next) {
   const { event_id } = request.params;
-  console.log(event_id);
   removeEvent(event_id)
     .then(() => {
       response.sendStatus(204);

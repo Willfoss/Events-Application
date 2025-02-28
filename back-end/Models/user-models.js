@@ -48,9 +48,7 @@ function fetchAllUsers(search) {
     queryArray.push(search);
   }
 
-  console.log(queryString);
   return db.query(queryString, queryArray).then(({ rows }) => {
-    console.log(rows);
     return rows;
   });
 }

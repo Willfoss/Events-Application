@@ -6,9 +6,6 @@ import { convertDateToRFC } from "../utils/utils";
 export default function AddToCalendar(props) {
   const { event } = props;
   const [url, setUrl] = useState("");
-  const navigate = useNavigate();
-
-  console.log(event);
 
   useEffect(() => {
     if (event.event_title) {

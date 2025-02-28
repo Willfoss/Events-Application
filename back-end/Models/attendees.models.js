@@ -31,8 +31,6 @@ function registerForEvent(event_id, user_id) {
       }
     });
 
-    console.log(eventRegistration.rows);
-
     if (isAttendeeAlreadyRegistered) {
       return { message: "you're already registered for this event!" };
     } else {
