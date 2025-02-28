@@ -49,3 +49,12 @@ export function convertToLongStringMonth(month) {
   }
   return outputMonth;
 }
+
+export function convertDateToRFC(date, time) {
+  let dateFormatted = date.split("/").reverse().join("");
+  dateFormatted += "T";
+  let timeFormatted = time.split(":").join("");
+  timeFormatted += "00Z";
+
+  return `${dateFormatted}${timeFormatted}`;
+}

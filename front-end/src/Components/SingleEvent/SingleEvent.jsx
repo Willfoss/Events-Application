@@ -145,7 +145,7 @@ export default function SingleEvent() {
           <section id="single-event-container">
             <img className="single-event-image" src={event.image}></img>
             <div className="single-event-button-container">
-              <AddToCalendar />
+              <AddToCalendar event={event} />
               {loggedInUser.role === "staff" ||
                 ("admin" && (
                   <button className="edit-event-button" onClick={() => setIsStaffEditing(true)}>
