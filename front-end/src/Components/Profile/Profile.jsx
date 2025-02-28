@@ -8,6 +8,7 @@ export default function Profile() {
 
   function handleSignOutClick() {
     setLoggedInUser(null);
+    localStorage.setItem("user", null);
   }
 
   return (
