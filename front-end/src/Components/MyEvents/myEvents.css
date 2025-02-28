@@ -4,3 +4,7 @@
   flex-direction: column;
   align-items: center;
 }
+.my-events-title {
+  color: var(--brand-colour);
+  font-size: 2em;
+}

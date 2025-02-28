@@ -126,6 +126,7 @@
 
 @media screen and (min-width: 769px) {
   .event-card-container {
+    min-height: 175px;
     padding: 2em;
   }
   .event-card-image {
@@ -139,7 +140,7 @@
     align-items: flex-end;
   }
   .single-event-button {
-    width: 300px;
+    width: 250px;
     height: 2.5em;
   }
   .event-title-time-container {

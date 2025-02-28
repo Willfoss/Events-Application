@@ -35,6 +35,7 @@ export default function MyEvents() {
     <div className="my-events-container">
       <UserHeader />
       <section className="events">
+        <h2 className="my-events-title">My Events</h2>
         {isLoading ? (
           <Loading />
         ) : isError ? (

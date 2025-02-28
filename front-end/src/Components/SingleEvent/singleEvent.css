@@ -17,7 +17,6 @@
 }
 
 .edit-event-button {
-  margin-right: 0.5em;
   align-self: flex-end;
   display: flex;
   justify-content: center;
@@ -25,7 +24,7 @@
   text-decoration: none;
   border: none;
   height: 2em;
-  width: 50%;
+  width: 100%;
   font-size: 1em;
   background-color: var(--brand-colour);
   font-weight: bold;
@@ -40,8 +39,8 @@
 .single-event-button-container {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
 }
 
 .single-event-image {
@@ -159,7 +158,9 @@
   .register-for-event-button,
   .button-loading-animation,
   .registration-button-loading,
-  .edit-event-button {
+  .edit-event-button,
+  .cancel-registration,
+  .registered-for-event {
     height: 2.5em;
   }
   .cancel-reg-container {
@@ -168,8 +169,9 @@
   .edit-event-button {
     width: 35%;
   }
-  .edit-event-button {
-    margin-right: 1em;
+  .single-event-button-container {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
