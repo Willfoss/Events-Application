@@ -106,7 +106,7 @@ export default function Login(props) {
               {isPasswordError && <p className="login-error-text ">Enter an Email Address</p>}
             </label>
             {isLoading === true ? (
-              <div className="signup-button-loading">
+              <div className="login-button-loading">
                 <Lottie className="button-loading-animation " animationData={buttonLoading} loop={true} />
               </div>
             ) : (
