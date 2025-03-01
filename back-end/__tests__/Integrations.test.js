@@ -170,7 +170,7 @@ describe("USERS testing", () => {
         });
     });
   });
-  describe.only("GET a list of all users (admin only)", () => {
+  describe("GET a list of all users (admin only)", () => {
     let adminUser;
     let userUser;
     let staffUser;
@@ -592,6 +592,81 @@ describe("EVENTS testing", () => {
         });
     });
   });
+  describe.only("GET QUERIES for all events", () => {
+    test("SEARCH QUERY 200: returns a list of all events that contain the search phrase", () => {
+      return request(app)
+        .get("/api/events?search=test")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(4);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: expect.any(String),
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+    test("DATE QUERY 200: returns a list of all events that contain the selected date", () => {
+      return request(app)
+        .get("/api/events?date=19/02/2025")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(2);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: "19/02/2025",
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+    test("DATE AND SEARCH QUERY 200: returns a list of all events that contain the search phrase and selected date", () => {
+      return request(app)
+        .get("/api/events?date=19/02/2025&search=4")
+        .set({ authorization: `Bearer ${userUser.token}` })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.events.length).toBe(1);
+          body.events.forEach((event) => {
+            expect(event).toMatchObject({
+              event_id: expect.any(Number),
+              event_title: expect.any(String),
+              event_description: expect.any(String),
+              host: expect.any(String),
+              image: expect.any(String),
+              location: expect.any(String),
+              start_date: "19/02/2025",
+              end_date: expect.any(String),
+              start_time: expect.any(String),
+              end_time: expect.any(String),
+              link: expect.any(String),
+            });
+          });
+        });
+    });
+  });
+
   describe("GET event by event_id", () => {
     test("GET 200: returns the event associated with the id in addition to an extra key/value pair of number of attendees for a user", () => {
       return request(app)

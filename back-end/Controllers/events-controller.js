@@ -1,7 +1,8 @@
 const { fetchAllEvents, fetchEventByEventId, createNewEvent, updateExistingEvent, removeEvent } = require("../Models/event-models");
 
 function getAllEvents(request, response, next) {
-  fetchAllEvents()
+  const { search, date } = request.query;
+  fetchAllEvents(search, date)
     .then((events) => {
       response.send({ events });
     })

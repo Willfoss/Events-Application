@@ -1,9 +1,17 @@
 const { patch } = require("../app");
 const db = require("../db/connection");
 
-function fetchAllEvents() {
-  const queryString = `SELECT * FROM events`;
-  return db.query(queryString).then(({ rows }) => {
+function fetchAllEvents(search = "", date) {
+  const queryArray = [search];
+
+  let queryString = `SELECT * FROM events WHERE event_title ~* $1`;
+
+  if (date) {
+    queryString += ` AND start_date = $2`;
+    queryArray.push(date);
+  }
+
+  return db.query(queryString, queryArray).then(({ rows }) => {
     return rows;
   });
 }
