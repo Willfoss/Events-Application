@@ -3,11 +3,15 @@ import "./eventsProvider.css";
 import UserHeader from "../UserHeader/UserHeader";
 import Events from "../Events/Events";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Search } from "lucide-react";
 
 export default function EventsProvider(props) {
   let location = useLocation();
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [successToastMessage, setSuccessToastMessage] = useState("");
+  const [search, setSearch] = useState("");
+  const [toggleSearching, setToggleSearching] = useState(false);
+  const [eventDate, setEventDate] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,10 +24,55 @@ export default function EventsProvider(props) {
     }
   }, []);
 
+  function handleSearchChange(event) {
+    setSearch(event.target.value);
+  }
+
+  function handleSearchRequest(event) {
+    if (event.key !== "Enter") {
+      return;
+    }
+    setToggleSearching(!toggleSearching);
+  }
+
+  function handleDateChange(event) {
+    setEventDate(event.target.value);
+  }
+
   return (
     <div className="events-provider-container">
       <UserHeader />
-      <Events showSuccessToast={showSuccessToast} setShowSuccessToast={setShowSuccessToast} successToastMessage={successToastMessage} />
+      <div className="events-header-image">
+        <div className="event-filters-container">
+          <label className="date-events-label bold" htmlFor="event-search">
+            Search by Date
+            <input className="event-search-input" name="event-date" value={eventDate} onChange={handleDateChange} type="date"></input>
+          </label>
+          <label className="search-events-label bold" htmlFor="event-search">
+            Search by Event
+            <div className="events-search-icon-bar-container">
+              <input
+                className="event-search-input"
+                name="event-search"
+                placeholder="search for an event"
+                value={search}
+                onChange={handleSearchChange}
+                onKeyDown={handleSearchRequest}
+              ></input>
+              <Search className="search-event-icon" onClick={handleSearchRequest} />
+            </div>
+          </label>
+        </div>
+      </div>
+      <Events
+        showSuccessToast={showSuccessToast}
+        setShowSuccessToast={setShowSuccessToast}
+        successToastMessage={successToastMessage}
+        eventSearch={search}
+        eventDate={eventDate}
+        toggleSearching={toggleSearching}
+        setToggleSearching={setToggleSearching}
+      />
     </div>
   );
 }

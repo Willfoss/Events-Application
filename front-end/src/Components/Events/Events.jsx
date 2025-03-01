@@ -9,7 +9,7 @@ import EventCard from "../EventCard/EventCard";
 import Toast from "../Toast/Toast";
 
 export default function Events(props) {
-  const { showSuccessToast, setShowSuccessToast, successToastMessage } = props;
+  const { showSuccessToast, setShowSuccessToast, successToastMessage, eventSearch, eventDate, toggleSearching, setToggleSearching } = props;
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -30,7 +30,7 @@ export default function Events(props) {
         setIsError(true);
         setErrorMessage(error.response.data.message);
       });
-  }, []);
+  }, [eventDate, toggleSearching]);
 
   return (
     <section className="events">
