@@ -4,7 +4,7 @@ EventSphere is an events website where users can view events, sign up to them an
 
 1. User authentication using JWTs.
 2. protected end points based on whether the user is registered in the database, whether the user is a staff member, or the user is an admin.
-3. full sign up login setups.
+3. full sign up and login functionality
 4. ability to view all events and search via event date or event title.
 5. a page where users can see all the events they're attending.
 6. a page where users can see their profile details.
