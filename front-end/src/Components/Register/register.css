@@ -25,6 +25,7 @@
 .register-container {
   justify-content: flex-start;
   margin-top: 2em;
+  padding: 0em 0.5em;
 }
 
 .register-form {
@@ -154,5 +155,6 @@ input::file-selector-button:hover {
 
   .register-container {
     margin: 0;
+    padding: 0em 1em;
   }
 }

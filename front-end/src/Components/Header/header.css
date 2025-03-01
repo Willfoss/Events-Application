@@ -2,6 +2,7 @@
   color: var(--brand-colour);
   width: 2.5em;
   height: 2.5em;
+  margin-left: 0.5em;
 }
 
 .logo-heading {
@@ -17,4 +18,13 @@
   width: 100%;
   gap: 0.5em;
   background-color: #fff;
+}
+
+@media screen and (min-width: 769px) {
+  .logo {
+    color: var(--brand-colour);
+    width: 2.5em;
+    height: 2.5em;
+    margin-left: 1em;
+  }
 }
