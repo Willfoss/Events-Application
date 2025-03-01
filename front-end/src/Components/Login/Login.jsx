@@ -59,6 +59,21 @@ export default function Login(props) {
       });
   }
 
+  function handleUserDemoLogin() {
+    setEmail("usertestemail2@email.com");
+    setPassword("password12345");
+  }
+
+  function handleStaffDemoLogin() {
+    setEmail("usertestemail4@email.com");
+    setPassword("password1234567");
+  }
+
+  function handleAdminDemoLogin() {
+    setEmail("willfossard@outlook.com");
+    setPassword("password123");
+  }
+
   return (
     <section id="login-section">
       <Header />
@@ -101,6 +116,17 @@ export default function Login(props) {
               <p className="to-signup"> Not a user? Register here!</p>
             </Link>
           </form>
+          <div className="demo-login-container">
+            <button className="demo-login-button" onClick={handleUserDemoLogin}>
+              Set user info
+            </button>
+            <button className="demo-login-button" onClick={handleStaffDemoLogin}>
+              Set staff info
+            </button>
+            <button className="demo-login-button" onClick={handleAdminDemoLogin}>
+              Set admin info
+            </button>
+          </div>
         </div>
       </div>
     </section>

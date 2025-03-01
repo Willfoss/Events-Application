@@ -1,4 +1,4 @@
-.logo {
+.logo-non-user {
   color: var(--brand-colour);
   width: 2.5em;
   height: 2.5em;
@@ -21,7 +21,7 @@
 }
 
 @media screen and (min-width: 769px) {
-  .logo {
+  .logo-non-user {
     color: var(--brand-colour);
     width: 2.5em;
     height: 2.5em;

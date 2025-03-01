@@ -4,7 +4,7 @@ const { authoriseUser } = require("../middleware/userAuth");
 
 const attendeesRouter = require("express").Router();
 
-attendeesRouter.route("/:event_id").get(authoriseStaff, getAttendeesByEventId);
+attendeesRouter.route("/:event_id").get(authoriseUser, getAttendeesByEventId);
 attendeesRouter.route("/").post(authoriseUser, postNewAttendee);
 attendeesRouter.route("/:event_id/:user_id").delete(authoriseUser, deleteEventAttendee);
 

@@ -148,12 +148,11 @@ export default function SingleEvent() {
             <div className="event-content-container">
               <div className="single-event-button-container">
                 {isUserAlreadyAttendingEvent && <AddToCalendar event={event} />}
-                {loggedInUser.role === "staff" ||
-                  ("admin" && (
-                    <button className="edit-event-button" onClick={() => setIsStaffEditing(true)}>
-                      Edit Event
-                    </button>
-                  ))}
+                {(loggedInUser.role === "staff" || loggedInUser.role === "admin") && (
+                  <button className="edit-event-button" onClick={() => setIsStaffEditing(true)}>
+                    Edit Event
+                  </button>
+                )}
               </div>
               <h2 className="single-event-title">{event.event_title}</h2>
               <p className="single-event-text">{event.event_description}</p>
