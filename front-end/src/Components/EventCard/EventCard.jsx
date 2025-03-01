@@ -42,7 +42,9 @@ export default function EventCard(props) {
       {windowPixels.width <= 768 && isAleadyingAttending && <h3 className="attending-event-confirmation">You're signed up!</h3>}
       <div className="event-card-container">
         <div className="event-details-container">
-          <img className="event-card-image" src={event.image}></img>
+          <div className="image-container">
+            <img className="event-card-image" src={event.image}></img>
+          </div>
           <div className="event-information-container">
             <div className="event-title-time-container">
               <h3 className="event-title">{event.event_title}</h3>
