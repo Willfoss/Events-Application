@@ -107,16 +107,19 @@ input:focus::placeholder {
 .to-login {
   font-weight: bold;
   color: var(--brand-colour);
-  border-bottom: 2px solid white;
-  margin-bottom: 2em;
-  &:hover {
-    border-bottom: 2px solid var(--brand-colour);
-  }
 }
 
 .to-login:hover,
 .register-button {
   cursor: pointer;
+}
+
+.to-login-link {
+  text-decoration: none;
+  border-bottom: 2px solid var(--primary-background-colour);
+  &:hover {
+    border-bottom: 2px solid var(--brand-colour);
+  }
 }
 
 input::file-selector-button {

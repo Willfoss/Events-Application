@@ -108,21 +108,6 @@ input:focus::placeholder {
   text-decoration: none;
 }
 
-.to-login {
-  font-weight: bold;
-  color: var(--brand-colour);
-  border-bottom: 2px solid white;
-  margin-bottom: 2em;
-  &:hover {
-    border-bottom: 2px solid var(--brand-colour);
-  }
-}
-
-.to-login:hover,
-.register-button {
-  cursor: pointer;
-}
-
 input::file-selector-button {
   background-color: var(--secondary-background-colour);
   border: none;

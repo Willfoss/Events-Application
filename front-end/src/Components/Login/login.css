@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 0em 1em;
 }
 
 .login-page-container {
@@ -110,18 +109,18 @@ input,
 .to-signup {
   font-weight: bold;
   color: var(--brand-colour);
-  border-bottom: 2px solid white;
-  &:hover {
-    border-bottom: 2px solid var(--brand-colour);
-  }
 }
 
 .login-text {
   color: var(--primary-text-colour);
 }
 
-.link {
+.to-signup-link {
   text-decoration: none;
+  border-bottom: 2px solid var(--primary-background-colour);
+  &:hover {
+    border-bottom: 2px solid var(--brand-colour);
+  }
 }
 
 .to-signup:hover,

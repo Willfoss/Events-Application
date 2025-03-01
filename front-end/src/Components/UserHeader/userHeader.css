@@ -118,6 +118,10 @@
   transform: translateY(-8px) rotate(-45deg);
 }
 
+.link {
+  text-decoration: none;
+}
+
 @media screen and (min-width: 410px) {
   .logo {
     color: var(--brand-colour);
