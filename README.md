@@ -11,7 +11,7 @@ EventSphere is an events website where users can view events, sign up to them an
 7. users can sign up to an event and also unattend the event.
 8. once signed up users can add an event to their google calendar.
 9. staff members can create, edit and delete events.
-10. admins have all features of normal users and staff users but can also create new accounts with either a user, staff or admin role, or edit the access permissions of an existing user.
+10. admins have all features of normal users and staff users but can also create new accounts with either a user, staff or admin role, or edit the access permissions of an existing user. Note a user will have to log out and log back in for their role change to take effect.
 11. fully responsive from mobile devices (320px) all the way up to widescreen desktops.
 
 [Deployed version here!](https://dotcomment.netlify.app/)
@@ -68,9 +68,13 @@ Start the back end server using
 
 Drop back into the main repo
 
-    cd..
+    cd ..
 
-Access the front-end folder and install dependencies
+Access the front-end folder
+
+    cd front-end
+
+Install dependencies
 
     npm install
 
