@@ -19,7 +19,6 @@ function databaseErrorHandler(error, request, response, next) {
 }
 
 function serverErrorHandler(error, request, response, next) {
-  console.log(error, "ERROR");
   response.status(500).send({ message: "internal server error" });
 }
 

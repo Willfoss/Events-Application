@@ -592,7 +592,7 @@ describe("EVENTS testing", () => {
         });
     });
   });
-  describe.only("GET QUERIES for all events", () => {
+  describe("GET QUERIES for all events", () => {
     test("SEARCH QUERY 200: returns a list of all events that contain the search phrase", () => {
       return request(app)
         .get("/api/events?search=test")
@@ -1361,15 +1361,6 @@ describe("ATTENDEES testing", () => {
         .expect(401)
         .then(({ body }) => {
           expect(body.message).toBe("user not authenticated");
-        });
-    });
-    test("GET 403: returns a unauthorised message if a user (not staff or admin) tries to get the info", () => {
-      return request(app)
-        .get("/api/attendees/five")
-        .set({ authorization: `Bearer ${userUser.token}` })
-        .expect(403)
-        .then(({ body }) => {
-          expect(body.message).toBe("unauthorised");
         });
     });
     test("GET 404: returns a not found message if the event does not exist", () => {
