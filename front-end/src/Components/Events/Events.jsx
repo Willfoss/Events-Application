@@ -20,6 +20,13 @@ export default function Events(props) {
     setIsLoading(true);
     setIsError(false);
     const authorisation = setAuthorisationHeader(loggedInUser);
+    if (eventDate && eventSearch) {
+      authorisation.params = { date: eventDate.split("-").reverse().join("/"), search: eventSearch };
+    } else if (eventDate) {
+      authorisation.params = { date: eventDate.split("-").reverse().join("/") };
+    } else if (eventSearch) {
+      authorisation.params = { search: eventSearch };
+    }
     getAllEvents(authorisation)
       .then(({ events }) => {
         setEvents(events);

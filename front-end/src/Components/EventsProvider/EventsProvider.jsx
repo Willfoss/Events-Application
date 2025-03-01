@@ -29,10 +29,9 @@ export default function EventsProvider(props) {
   }
 
   function handleSearchRequest(event) {
-    if (event.key !== "Enter") {
-      return;
+    if (event._reactName === "onClick" || event.key === "Enter") {
+      setToggleSearching(!toggleSearching);
     }
-    setToggleSearching(!toggleSearching);
   }
 
   function handleDateChange(event) {
@@ -63,6 +62,26 @@ export default function EventsProvider(props) {
             </div>
           </label>
         </div>
+      </div>
+      <div className="event-filters-mobile-container">
+        <label className="date-events-label-mobile bold" htmlFor="event-search">
+          Search by Date
+          <input className="event-search-mobile-input" name="event-date" value={eventDate} onChange={handleDateChange} type="date"></input>
+        </label>
+        <label className="search-events-label bold" htmlFor="event-search">
+          Search by Event
+          <div className="events-search-icon-bar-container">
+            <input
+              className="event-search-mobile-input"
+              name="event-search"
+              placeholder="search for an event"
+              value={search}
+              onChange={handleSearchChange}
+              onKeyDown={handleSearchRequest}
+            ></input>
+            <Search className="search-event-mobile-icon" onClick={handleSearchRequest} />
+          </div>
+        </label>
       </div>
       <Events
         showSuccessToast={showSuccessToast}
