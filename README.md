@@ -14,7 +14,7 @@ EventSphere is an events website where users can view events, sign up to them an
 10. admins have all features of normal users and staff users but can also create new accounts with either a user, staff or admin role, or edit the access permissions of an existing user. Note a user will have to log out and log back in for their role change to take effect.
 11. fully responsive from mobile devices (320px) all the way up to widescreen desktops.
 
-[Deployed version here!](https://dotcomment.netlify.app/)
+[Deployed version here!](https://eventssphere.netlify.app/)
 
 ---
 
